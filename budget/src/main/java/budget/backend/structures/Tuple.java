@@ -53,6 +53,7 @@ public class Tuple<E extends Comparable<E>,F extends Comparable<F>> implements C
   }
 
   @SuppressWarnings("unchecked")
+  @Override
   public int compareTo(Tuple anotherTuple){
     try {
       //The first element has higher priority, therefore second is only evaluated if the first argument returns 0
