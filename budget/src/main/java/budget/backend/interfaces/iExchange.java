@@ -1,5 +1,7 @@
 package budget.backend.interfaces;
-import java.time.LocalDateTime;
+import java.util.Date;
+
+import budget.backend.money.Currency;
 import budget.backend.tags.*;
 
 public interface iExchange extends Comparable<iExchange>{
@@ -7,27 +9,25 @@ public interface iExchange extends Comparable<iExchange>{
   public String toString();
 
   public int getId();
+  public void setId(int id);
 
   /**
-   * 
-   * @return return the amount stored by this object. 
+   * @return return a Date object representing the date of creation
    */
-  public int getAmount();
-
-  /**
-   * @return return a LocalDateTime object representing the date of creation
-   */
-  public LocalDateTime getDate();
+  public Date getDate();
+  public void setDate(Date date);
 
   /**
    * @return the currency of this object
    */
-  public String getCurrency();
+  public Currency getCurrency();
+  public void setCurrency(Currency currency);
 
   /**
    * @return a list of Tag objects
    */
   public Tag getLabel();
+  public void setLabel(Tag label);
 
   /**
    * Compare two iExchange objects by the following rules
@@ -40,11 +40,11 @@ public interface iExchange extends Comparable<iExchange>{
    * 
    * @param o   an iExchange object
    * 
-   * @return x<0 if the given object is less than this object
+   * @return x<0 if this object is less than the given object
    * 
    * @return x>0 otherwise. x=0 is not possible in this implementation
    */
   public int compareTo(iExchange o);
-
+ 
 }
 
