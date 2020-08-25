@@ -42,7 +42,7 @@ _____
 * two layered -> type and note ? -> unique for each instance
 
 ## exchanger
-* helps to megbecsül the current balance between currencies
+* helps to estimate the current balance between currencies
 
 _____
 

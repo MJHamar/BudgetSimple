@@ -1,6 +1,10 @@
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/users/User.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iUser.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/groups/Group.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Currency.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/AVLSearchTree.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/BinaryTreeHeap.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iGroup.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/tags/Tag.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/BinaryTreeNode.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Expense.java
@@ -12,5 +16,6 @@
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/Exceptions/CurrencyException.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/DataChecker.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/BinaryTree.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Debt.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/Tuple.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/tags/tMisc.java

@@ -2,9 +2,12 @@ budget/backend/structures/BinaryTree.class
 budget/backend/structures/Tuple.class
 budget/backend/utils/DataChecker.class
 budget/backend/utils/Exceptions/CurrencyException.class
+budget/backend/interfaces/iUser.class
 budget/backend/tags/tMisc.class
 budget/backend/money/Currency.class
+budget/backend/users/User.class
 budget/backend/tags/Tag.class
+budget/backend/interfaces/iGroup.class
 budget/backend/structures/BinaryTreeHeap.class
 budget/backend/money/Exchange.class
 budget/backend/utils/CurrencyExchanger.class
@@ -12,5 +15,7 @@ budget/backend/structures/BinaryTreeNode.class
 budget/backend/interfaces/iExchange.class
 budget/backend/money/Expense.class
 budget/backend/structures/AVLSearchTree.class
+budget/backend/groups/Group.class
+budget/backend/money/Debt.class
 budget/backend/structures/AVLTreeNode.class
 budget/backend/money/Income.class

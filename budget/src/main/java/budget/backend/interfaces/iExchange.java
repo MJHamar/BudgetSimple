@@ -45,6 +45,8 @@ public interface iExchange extends Comparable<iExchange>{
    * @return x>0 otherwise. x=0 is not possible in this implementation
    */
   public int compareTo(iExchange o);
+
+  public String toString();
  
 }
 
