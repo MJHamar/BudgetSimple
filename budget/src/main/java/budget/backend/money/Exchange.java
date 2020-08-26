@@ -89,4 +89,18 @@ public abstract class Exchange implements iExchange {
     return this.label;
   }
 
+  /**
+   * Export the class' fields to a String
+   * 
+   * Format: <id> [currency.amount currency.currency] <date> <label>
+   * @return the String in the given format
+   */
+  public String toString(){
+    String ret = "";
+
+    ret += id + " " + currency.toString() + " " + date.toString() + " " + label.toString();
+
+    return ret;
+  }
+
 }

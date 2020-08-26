@@ -10,33 +10,76 @@ public class Currency implements Comparable<Currency> {
   private String currency;
   private DataChecker dataChecker;
 
+  /**
+   * Constructor to make a default instance
+   * 
+   * Default values are: amount = 0, currency = "HUF"
+   */
   public Currency() {
     this.dataChecker = new DataChecker();
     this.amount = 0;
     this.currency = "HUF";
   }
 
+  /**
+   * Constructor to make an instance with defined amount and currency
+   * 
+   * @param amount
+   * @param currency
+   * @throws IllegalArgumentException
+   */
   public Currency(int amount, String currency) throws IllegalArgumentException{
     this.dataChecker = new DataChecker();
     this.amount = amount;
     try {
       dataChecker.verifyCurrency(currency);
       this.currency = currency;
-    } catch (IllegalArgumentException e) {
+    } catch (Exception e) {
       System.out.println("  [ERROR]:        " + e.getMessage());
       throw e;
     }
   }
 
+  /**
+   * Constructor to make an instance from a composed String defined by @see Currency.toString()
+   * 
+   * @param composedString
+   * @throws IllegalArgumentException
+   */
+  public Currency(String composedString) throws IllegalArgumentException{
+    this.dataChecker = new DataChecker();
+    try{
+      dataChecker.verifyCurrency(composedString);
+      String help = composedString.substring(1, composedString.indexOf(" "));
+      this.amount = Integer.valueOf(help);
+      help = composedString.substring(composedString.indexOf(" ")+1, composedString.length()-2);
+    } catch (Exception e){
+      System.out.println(e.getMessage());
+      throw e;
+    }
+  }
 
+  /**
+   * 
+   * @param amount
+   */
   public void setAmount(int amount){
     this.amount = amount;
   }
 
+  /**
+   * 
+   * @return the amount
+   */
   public int getAmount(){
     return this.amount;
   }
 
+  /**
+   * 
+   * @param currency
+   * @throws IllegalArgumentException
+   */
   public void setCurrency(String currency) throws IllegalArgumentException{
     try {
       dataChecker.verifyCurrency(currency);
@@ -46,6 +89,10 @@ public class Currency implements Comparable<Currency> {
     }
   }
 
+  /**
+   * 
+   * @return the currency
+   */
   public String getCurrency(){
     return this.currency;
   }
@@ -66,6 +113,20 @@ public class Currency implements Comparable<Currency> {
     
     return thisConv-o.getAmount();
 
+  }
+
+  /**
+   * Export the class' fields to a String. 
+   * 
+   * Format: [<amount> <currency>];
+   * @return the composed String with the given format.
+   */
+  public String toString() {
+    String ret = "";
+
+    ret += "[" + amount + " " + currency + "]";
+
+    return ret;
   }
 
 }

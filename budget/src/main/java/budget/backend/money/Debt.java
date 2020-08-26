@@ -37,7 +37,6 @@ public class Debt extends Exchange {
   public void resolveDebt(){
     
   }
-
   
   
 }

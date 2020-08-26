@@ -46,7 +46,6 @@ public interface iExchange extends Comparable<iExchange>{
    */
   public int compareTo(iExchange o);
 
-  public String toString();
  
 }
 
