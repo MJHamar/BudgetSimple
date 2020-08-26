@@ -4,38 +4,71 @@ import java.util.Date;
 
 import budget.backend.tags.Tag;
 import budget.backend.users.User;
+import budget.backend.utils.Exceptions.CurrencyException;
 
 public class Debt extends Exchange {
 
   private User debtor; /** the user that owes the money */
   private User creditor; /** the user that is owed */
 
+  public Debt(Currency currency, Date date, Tag label, User debtor, User creditor){
+    super(currency, date, label);
+    setId(id);
+    //TODO: verify users
+    this.debtor = debtor;
+    this.creditor = creditor;
+  }
+
   @Override
   public void setId(int id) {
-    // TODO Auto-generated method stub
-
+    try {
+      super.dataChecker.verifyId(id);
+      super.id = id;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
   public void setDate(Date date) {
-    // TODO Auto-generated method stub
-
+    try {
+      super.dataChecker.verifyDate(date);
+      super.date = date;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
-  public void setCurrency(Currency currency) {
-    // TODO Auto-generated method stub
-
+  public void setCurrency(Currency currency) throws CurrencyException {
+    try {
+      super.dataChecker.verifyCurrency(currency);
+      if (currency.getAmount() < 0)
+        throw new CurrencyException("Income amount must be positive!");
+      super.currency = currency;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   @Override
   public void setLabel(Tag label) {
-    // TODO Auto-generated method stub
-
+    this.label = label;
   }
 
   public void resolveDebt(){
-    
+    //TODO: add income to the creditor and expense to the debtor. They will both have a resoved debt label and the label that this object has.
+  }
+
+  @Override
+  public String toString(){
+    String ret = "";
+
+    ret = super.toString();
+    ret += "D:" + debtor.getId();
+    ret += "C:" + creditor.getId();
+
+    return ret;
   }
   
   

@@ -7,7 +7,7 @@ import budget.backend.utils.Exceptions.CurrencyException;
 
 public class Income extends Exchange {
 
-  public Income(Currency currency, Date date, Tag label){
+  public Income(int id, Currency currency, Date date, Tag label){
     super(currency, date, label);
     setId(id);
   }

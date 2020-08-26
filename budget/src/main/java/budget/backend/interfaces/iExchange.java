@@ -29,6 +29,9 @@ public interface iExchange extends Comparable<iExchange>{
   public Tag getLabel();
   public void setLabel(Tag label);
 
+  public String getGroupID();
+  public void setGroupID(String groupID);
+
   /**
    * Compare two iExchange objects by the following rules
    * 

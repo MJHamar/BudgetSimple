@@ -3,8 +3,6 @@ package budget.backend.money;
 import budget.backend.structures.Tuple;
 import java.util.Date;
 
-import javax.swing.text.PlainDocument;
-
 import budget.backend.interfaces.iExchange;
 import budget.backend.tags.*;
 import budget.backend.utils.DataChecker;
@@ -16,6 +14,7 @@ public abstract class Exchange implements iExchange {
   protected Date date;
   protected Tag label; // miscellaneous is the default tag
   protected DataChecker dataChecker;
+  protected String groupID; // user id in case of a simple income/expense
 
   /**
    * Constructor to initialise a default Exchange class, where all values are set to default
@@ -89,6 +88,19 @@ public abstract class Exchange implements iExchange {
     return this.label;
   }
 
+  public String getGroupID(){
+    return this.groupID;
+  } 
+  @Override
+  public void setGroupID(String groupID) {
+    try {
+      this.dataChecker.verifyGroupID(groupID);
+      this.groupID = groupID;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
   /**
    * Export the class' fields to a String
    * 
@@ -98,7 +110,7 @@ public abstract class Exchange implements iExchange {
   public String toString(){
     String ret = "";
 
-    ret += id + " " + currency.toString() + " " + date.toString() + " " + label.toString();
+    ret += id + " " + currency.toString() + " " + date.toString() + " " + label.toString() + " " + this.groupID;
 
     return ret;
   }
