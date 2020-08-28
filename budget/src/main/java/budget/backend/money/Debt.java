@@ -51,11 +51,7 @@ public class Debt extends Exchange {
     }
   }
 
-  @Override
-  public void setLabel(Tag label) {
-    this.label = label;
-  }
-
+  
   public void resolveDebt(){
     //TODO: add income to the creditor and expense to the debtor. They will both have a resoved debt label and the label that this object has.
   }

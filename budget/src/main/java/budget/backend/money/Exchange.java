@@ -2,6 +2,7 @@ package budget.backend.money;
 
 import budget.backend.structures.Tuple;
 import java.util.Date;
+import java.util.LinkedList;
 
 import budget.backend.interfaces.iExchange;
 import budget.backend.tags.*;
@@ -12,7 +13,7 @@ public abstract class Exchange implements iExchange {
   protected int id; // 9-digit number
   protected Currency currency;
   protected Date date;
-  protected Tag label; // miscellaneous is the default tag
+  protected LinkedList<Tag> labels; // miscellaneous is the default tag
   protected DataChecker dataChecker;
   protected String groupID; // user id in case of a simple income/expense
 
@@ -23,7 +24,8 @@ public abstract class Exchange implements iExchange {
     this.id = 000000000;
     this.currency = new Currency();
     this.date = new Date();
-    this.label = new tMisc();
+    this.labels = new LinkedList<>();
+    this.labels.add(new tMisc());
     this.dataChecker = new DataChecker();
   }
   
@@ -42,7 +44,9 @@ public abstract class Exchange implements iExchange {
       this.currency = currency;
       dataChecker.verifyDate(date);
       this.date = date;
-      this.label = label;
+      this.labels = new LinkedList<>();
+      this.labels.add(label);
+
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
@@ -51,6 +55,7 @@ public abstract class Exchange implements iExchange {
   /**
    * @see budget.backend.interfaces.iExchange
    */
+  @Override
   public int compareTo(iExchange o){
 
     Tuple<Currency, Tuple<Date, Integer>> key1 = new Tuple<>(this.currency, new Tuple<>(this.date, this.id));
@@ -63,6 +68,7 @@ public abstract class Exchange implements iExchange {
   /**
    * @return the id of this object
    */
+  @Override
   public int getId(){
     return this.id;
   }
@@ -70,6 +76,7 @@ public abstract class Exchange implements iExchange {
   /**
    * @return a {@link budget.backend.money.Currency} object
    */
+  @Override
   public Currency getCurrency(){
     return this.currency;
   }
@@ -77,6 +84,7 @@ public abstract class Exchange implements iExchange {
   /**
    * @return a Date object
    */
+  @Override
   public Date getDate(){
     return this.date;
   }
@@ -84,10 +92,16 @@ public abstract class Exchange implements iExchange {
   /**
    * @return a {@link budget.backend.tags.Tag} object
    */
-  public Tag getLabel(){
-    return this.label;
+  @Override
+  public LinkedList<Tag> getLabel(){
+    return this.labels;
+  }
+  @Override
+  public void addLabel(Tag label){
+    this.labels.add(label);
   }
 
+  @Override
   public String getGroupID(){
     return this.groupID;
   } 
@@ -107,6 +121,7 @@ public abstract class Exchange implements iExchange {
    * Format: <id> [currency.amount currency.currency] <date> <label>
    * @return the String in the given format
    */
+  @Override
   public String toString(){
     String ret = "";
 

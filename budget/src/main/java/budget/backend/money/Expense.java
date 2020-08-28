@@ -45,10 +45,6 @@ public class Expense extends Exchange {
     }
   }
 
-  @Override
-  public void setLabel(Tag label) {
-    super.label = label;
-  }
 
 
 }

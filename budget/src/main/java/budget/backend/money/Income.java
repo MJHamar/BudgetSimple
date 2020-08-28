@@ -45,11 +45,5 @@ public class Income extends Exchange {
     }
   }
 
-  @Override
-  public void setLabel(Tag label) {
-    super.label = label;
-  }
-
-
   
 }

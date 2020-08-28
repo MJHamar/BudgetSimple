@@ -1,5 +1,7 @@
 package budget.backend.interfaces;
+
 import java.util.Date;
+import java.util.LinkedList;
 
 import budget.backend.money.Currency;
 import budget.backend.tags.*;
@@ -26,8 +28,8 @@ public interface iExchange extends Comparable<iExchange>{
   /**
    * @return a list of Tag objects
    */
-  public Tag getLabel();
-  public void setLabel(Tag label);
+  public LinkedList<Tag> getLabel()
+  public void addLabel(Tag label);
 
   public String getGroupID();
   public void setGroupID(String groupID);
