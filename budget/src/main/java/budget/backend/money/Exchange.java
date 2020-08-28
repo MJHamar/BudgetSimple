@@ -25,7 +25,7 @@ public abstract class Exchange implements iExchange {
     this.currency = new Currency();
     this.date = new Date();
     this.labels = new LinkedList<>();
-    this.labels.add(new tMisc());
+    this.labels.add(new Tag());
     this.dataChecker = new DataChecker();
   }
   
@@ -125,7 +125,7 @@ public abstract class Exchange implements iExchange {
   public String toString(){
     String ret = "";
 
-    ret += id + " " + currency.toString() + " " + date.toString() + " " + label.toString() + " " + this.groupID;
+    ret += id + " " + currency.toString() + " " + date.toString() + " " + labels.toString() + " " + this.groupID;
 
     return ret;
   }

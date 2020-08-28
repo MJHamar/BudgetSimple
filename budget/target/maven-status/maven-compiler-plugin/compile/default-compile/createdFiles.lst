@@ -1,9 +1,10 @@
 budget/backend/structures/BinaryTree.class
+budget/backend/tags/tRoot.class
 budget/backend/structures/Tuple.class
 budget/backend/utils/DataChecker.class
 budget/backend/utils/Exceptions/CurrencyException.class
 budget/backend/interfaces/iUser.class
-budget/backend/tags/tMisc.class
+budget/backend/interfaces/iTag.class
 budget/backend/money/Currency.class
 budget/backend/users/User.class
 budget/backend/tags/Tag.class

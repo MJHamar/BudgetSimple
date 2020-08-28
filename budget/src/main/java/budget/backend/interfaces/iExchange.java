@@ -28,7 +28,7 @@ public interface iExchange extends Comparable<iExchange>{
   /**
    * @return a list of Tag objects
    */
-  public LinkedList<Tag> getLabel()
+  public LinkedList<Tag> getLabel();
   public void addLabel(Tag label);
 
   public String getGroupID();
