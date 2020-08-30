@@ -27,7 +27,8 @@ public class UtilsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void dataCheckerCurrencyFalse2() {
-      dataChecker.verifyCurrency(new Currency(123, "WER"));
+      Currency c = new Currency(123, "WER");
+      dataChecker.verifyCurrency(c);
     }
 
     @Test
@@ -80,7 +81,8 @@ public class UtilsTest {
 
     @Test
     public void dataCheckerTagRight(){
-      iTag t = new Tag();
+      iTag root = new tRoot();
+      Tag t = new Tag(root);
       dataChecker.verifyTag(new Tag(t, new LinkedList<Tag>(), 12345, "name"));
     }
 

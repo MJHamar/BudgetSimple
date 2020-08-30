@@ -37,38 +37,45 @@ public class DataChecker {
 
   }
 
-  public void verifyId(int id) throws IllegalArgumentException{
+  public void verifyId(int id) throws IllegalArgumentException
+  {
     if (id < 100000000 || id > 999999999)
       throw new IllegalArgumentException("Wrong length of ID");
     //TODO: verify that id is unique
   }
 
-  public void verifyDate(Date date) throws IllegalArgumentException {
+  public void verifyDate(Date date) throws IllegalArgumentException
+  {
     Date now = new Date();
     if (now.compareTo(date) < 0) throw new IllegalArgumentException("Given date is in the future!");
   }
 
-  public void verifyGroupID(String groupID) throws IllegalArgumentException{
+  public void verifyGroupID(String groupID) throws IllegalArgumentException
+  {
     //TODO: figure out what makes a groupID a groupID
   }
 
-  public void verifyTag(Tag t) throws IllegalArgumentException{
+  public void verifyTag(Tag t) throws IllegalArgumentException
+  {
     try {
       verifyTagId(t.getId());
+      if (t.getName() == "" || t.getDescendants() == null || t.getParent() == null)
+        throw new IllegalArgumentException("Badly set Tag");
     } catch (Exception e) {
-      throw e;
+      throw new IllegalArgumentException("Badly set Tag: " + t);
     }
-    if (t.getName() == "" || t.getDescendants() == null || t.getParent() == null)
-      throw new IllegalArgumentException("Badly set Tag");
+    
     
   }
 
-  public void verifyTRoot(tRoot t) throws IllegalArgumentException{
+  public void verifyTRoot(tRoot t) throws IllegalArgumentException
+  {
     if (t.getDescendants() == null || t.getName() != "root" || t.getId() != 00000)
       throw new IllegalArgumentException("Badly set tRoot");
   }
 
-  public void verifyTagId(int id) throws IllegalArgumentException{
+  public void verifyTagId(int id) throws IllegalArgumentException
+  {
     if (id == 00000) throw new IllegalArgumentException("do not use the id reserved for tRoot");
     if (id < 10000 || id > 99999) throw new IllegalArgumentException("erroneous Tag id");
   }

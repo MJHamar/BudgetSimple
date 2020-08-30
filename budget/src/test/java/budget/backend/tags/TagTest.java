@@ -16,8 +16,8 @@ public class TagTest {
 
 
 	public TagTest(){
-      System.out.println("---------TESTING THE TAGS----------");
-    }
+		
+	}
 
 	@Test 
 	public void tNull(){
@@ -33,15 +33,20 @@ public class TagTest {
 		assertTrue(t);
 	}
 
+	@Test
 	public void constructorTest(){
 		Tag twoTest = new Tag("12345 Elem 00000");
-		
+		boolean t = twoTest.getId() == 12345 && twoTest.getParent() == null && twoTest.getName() == "Elem" && twoTest.getDescendants() != null;
+		assertTrue(t); 
 	}
 
+	@Test(expected = IllegalArgumentException.class)
 	public void tFail(){
-
+		Tag faliTest = new Tag("123 Elem 00000");
 	}
-	/*
-	private Tag faliTest = new Tag("123 Elem 00000");
-	private Tag failTest2 = new Tag("12345  scac"); */
+
+	@Test(expected = IllegalArgumentException.class)
+	public void tFail2(){
+		Tag failTest2 = new Tag("12345  scac");
+	}
 }

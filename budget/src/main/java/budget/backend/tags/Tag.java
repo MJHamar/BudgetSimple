@@ -57,18 +57,16 @@ public class Tag implements iTag {
       else dataChecker.verifyTag((Tag)parent);
       this.parent = parent;
       dataChecker.verifyTagId(id);
-      this.id =(id);
+      this.id = id;
       this.descendants = new LinkedList<>();
       for (Tag t : descendants)
         dataChecker.verifyTag(t);
       this.descendants = descendants;
+      this.name = name;
     } catch (Exception e) {
-      //TODO: handle exception
+      System.out.println(e.getMessage());
+      throw e;
     }
-    this.parent = parent;
-    this.descendants = descendants;
-    this.id = id;
-    this.name = name;
 
   }
 
@@ -84,6 +82,10 @@ public class Tag implements iTag {
 
   public iTag getParent(){
     return this.parent;
+  }
+  public void setParent(iTag t){
+    if (t instanceof tRoot) dataChecker.verifyTRoot((tRoot)t);
+    else dataChecker.verifyTag((Tag)t);
   }
 
   /**
