@@ -26,9 +26,24 @@ public class tRoot implements iTag {
   /**
    * Add a new descendant to the object
    * @param e
+   * @return true if the insertion succeeded
    */
-  public void addDescendant(Tag e) {
-    descendants.add(e);
+  public boolean addDescendant(Tag e) {
+    return descendants.add(e);
+  }
+
+  /**
+   * try adding a list of descendants to the tree
+   * @param es
+   * @return false if any of the insertions failed
+   */
+  public boolean addDescendants(LinkedList<Tag> es) {
+    boolean ret = true;
+    for (Tag t : es) {
+      if (!addDescendant(t))
+        ret = false;
+    }
+    return ret;
   }
 
   @Override
