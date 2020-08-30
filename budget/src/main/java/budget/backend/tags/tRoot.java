@@ -61,4 +61,9 @@ public class tRoot implements iTag {
     return "tRoot";
   }
 
+  @Override
+  public String getName() {
+    return "root";
+  }
+
 }

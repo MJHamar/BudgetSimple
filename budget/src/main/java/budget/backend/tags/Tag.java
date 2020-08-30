@@ -3,6 +3,7 @@ package budget.backend.tags;
 import java.util.LinkedList;
 
 import budget.backend.interfaces.iTag;
+import budget.backend.utils.DataChecker;
 
 /**
  * This class gives the opinion for the user to create custom tags with which the user will be able to better track its moneyflow, make more representative statistics
@@ -15,8 +16,10 @@ public class Tag implements iTag {
   private LinkedList<Tag> descendants;
   private int id; /** a 5-digit number */
   private String name;
+  private DataChecker dataChecker;
 
   public Tag(){
+    this.dataChecker = new DataChecker();
     this.parent = null;
     this.descendants = new LinkedList<>();
     this.id = 10000;
@@ -25,10 +28,15 @@ public class Tag implements iTag {
   }
 
   public Tag(iTag root){
+    this.dataChecker = new DataChecker();
     this.parent = root;
+    this.descendants = new LinkedList<>();
+    this.id = 10000;
+    this.name = "Misc";
   }
 
   public Tag(String composedString){
+    this.dataChecker = new DataChecker();
     String[] help = composedString.split(" ");
     try {
       this.id = Integer.valueOf(help[0]);
@@ -42,6 +50,28 @@ public class Tag implements iTag {
     }
   }
 
+  public Tag(iTag parent, LinkedList<Tag> descendants, int id, String name){
+    this.dataChecker = new DataChecker();
+    try {
+      if (parent instanceof tRoot)dataChecker.verifyTRoot((tRoot)parent);
+      else dataChecker.verifyTag((Tag)parent);
+      this.parent = parent;
+      dataChecker.verifyTagId(id);
+      this.id =(id);
+      this.descendants = new LinkedList<>();
+      for (Tag t : descendants)
+        dataChecker.verifyTag(t);
+      this.descendants = descendants;
+    } catch (Exception e) {
+      //TODO: handle exception
+    }
+    this.parent = parent;
+    this.descendants = descendants;
+    this.id = id;
+    this.name = name;
+
+  }
+
   @Override
   public int getId() {
     return this.id;  
@@ -50,6 +80,10 @@ public class Tag implements iTag {
   @Override
   public LinkedList<Tag> getDescendants() {
     return this.descendants;
+  }
+
+  public iTag getParent(){
+    return this.parent;
   }
 
   /**
@@ -82,9 +116,14 @@ public class Tag implements iTag {
 
     ret += id + " ";
     ret += name + " ";
-    ret += parent.getId();
+    if (this.parent != null) ret += parent.getId();
 
     return ret;
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
   }
 
 

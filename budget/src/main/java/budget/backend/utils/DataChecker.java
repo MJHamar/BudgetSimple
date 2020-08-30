@@ -3,7 +3,10 @@ package budget.backend.utils;
 import java.lang.IllegalArgumentException;
 import java.util.Date;
 
+import budget.backend.interfaces.iTag;
 import budget.backend.money.Currency;
+import budget.backend.tags.tRoot;
+import budget.backend.tags.Tag;
 import budget.backend.utils.CurrencyExchanger;
 
 /**
@@ -45,7 +48,28 @@ public class DataChecker {
     if (now.compareTo(date) < 0) throw new IllegalArgumentException("Given date is in the future!");
   }
 
-  public void verifyGroupID(String groupID){
+  public void verifyGroupID(String groupID) throws IllegalArgumentException{
     //TODO: figure out what makes a groupID a groupID
+  }
+
+  public void verifyTag(Tag t) throws IllegalArgumentException{
+    try {
+      verifyTagId(t.getId());
+    } catch (Exception e) {
+      throw e;
+    }
+    if (t.getName() == "" || t.getDescendants() == null || t.getParent() == null)
+      throw new IllegalArgumentException("Badly set Tag");
+    
+  }
+
+  public void verifyTRoot(tRoot t) throws IllegalArgumentException{
+    if (t.getDescendants() == null || t.getName() != "root" || t.getId() != 00000)
+      throw new IllegalArgumentException("Badly set tRoot");
+  }
+
+  public void verifyTagId(int id) throws IllegalArgumentException{
+    if (id == 00000) throw new IllegalArgumentException("do not use the id reserved for tRoot");
+    if (id < 10000 || id > 99999) throw new IllegalArgumentException("erroneous Tag id");
   }
 }

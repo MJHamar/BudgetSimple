@@ -9,5 +9,6 @@ public interface iTag {
   public int getId();
   public String toString();
   public LinkedList<Tag> getDescendants();
+  public String getName();
 
 }
