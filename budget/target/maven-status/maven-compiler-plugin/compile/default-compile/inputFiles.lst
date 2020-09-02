@@ -1,4 +1,5 @@
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/users/User.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iTagStore.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/AVLSearchTree.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/BinaryTreeHeap.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/stores/ExchangeStore.java
@@ -7,6 +8,7 @@
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/CurrencyExchanger.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/tags/tRoot.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/DataChecker.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iExchangeStore.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iUser.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/groups/Group.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Currency.java
@@ -17,7 +19,6 @@
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iExchange.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Income.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Exchange.java
-/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iStore.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/stores/TagStore.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/Exceptions/CurrencyException.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/BinaryTree.java

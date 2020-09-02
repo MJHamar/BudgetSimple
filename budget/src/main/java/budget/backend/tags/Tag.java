@@ -14,7 +14,7 @@ public class Tag implements iTag {
   
   private iTag parent;
   private LinkedList<Tag> descendants;
-  private int id; /** a 5-digit number */
+  private String id; /** a 5-digit number */
   private String name;
   private DataChecker dataChecker;
 
@@ -22,26 +22,31 @@ public class Tag implements iTag {
     this.dataChecker = new DataChecker();
     this.parent = null;
     this.descendants = new LinkedList<>();
-    this.id = 10000;
+    this.id = "10000";
     this.name = "Misc";
     System.out.println("Please set parent with an existing tRoot instance to have a full tree");
   }
 
   public Tag(iTag root){
     this.dataChecker = new DataChecker();
+    dataChecker.verifyTRoot((tRoot)root);
     this.parent = root;
     this.descendants = new LinkedList<>();
-    this.id = 10000;
+    this.id = "10000";
     this.name = "Misc";
   }
 
-  public Tag(String composedString){
+  public Tag(String composedString) throws IllegalArgumentException{
     this.dataChecker = new DataChecker();
     String[] help = composedString.split(" ");
+    System.out.println(help[0] + "\n" + help[1] + "\n" + help[2]);
     try {
-      this.id = Integer.valueOf(help[0]);
+      this.id = help[0];
       this.descendants = new LinkedList<>();
       this.parent = null;
+      if (help[1] != "")
+        this.name = help[1];
+      else throw new IllegalArgumentException("Name field must not be empty!");
     } catch (Exception e) {
       System.out.println(e.getMessage());
       throw e;
@@ -50,7 +55,7 @@ public class Tag implements iTag {
     }
   }
 
-  public Tag(iTag parent, LinkedList<Tag> descendants, int id, String name){
+  public Tag(iTag parent, LinkedList<Tag> descendants, String id, String name) throws IllegalArgumentException{
     this.dataChecker = new DataChecker();
     try {
       if (parent instanceof tRoot)dataChecker.verifyTRoot((tRoot)parent);
@@ -71,7 +76,7 @@ public class Tag implements iTag {
   }
 
   @Override
-  public int getId() {
+  public String getId() {
     return this.id;  
   }
 
@@ -106,7 +111,7 @@ public class Tag implements iTag {
    */
   public boolean addDescendants(LinkedList<Tag> es){
     boolean ret = true;
-    for (Tag t : es){
+    for (Tag t : es){ 
       if (!addDescendant(t)) ret = false;
     }
     return ret;

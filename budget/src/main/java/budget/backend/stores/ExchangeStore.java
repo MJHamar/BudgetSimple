@@ -1,20 +1,22 @@
 package budget.backend.stores;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
 
-import budget.backend.interfaces.iStore;
+import budget.backend.interfaces.iExchangeStore;
+import budget.backend.money.Exchange;
 
-public class ExchangeStore implements iStore {
+public class ExchangeStore implements iExchangeStore {
 
   @Override
   public boolean readFile(BufferedReader in) {
-    // TODO Auto-generated method stub
+    // TODO decrypt data
     return false;
   }
 
   @Override
-  public boolean writeFile(BufferedReader out) {
-    // TODO Auto-generated method stub
+  public boolean writeFile(FileWriter out) {
+    // TODO encrypt data
     return false;
   }
 
@@ -25,15 +27,15 @@ public class ExchangeStore implements iStore {
   }
 
   @Override
-  public boolean delete(String id) {
+  public Exchange delete(String id) {
     // TODO Auto-generated method stub
-    return false;
+    return null;
   }
 
   @Override
-  public boolean find(String id) {
+  public Exchange find(String id) {
     // TODO Auto-generated method stub
-    return false;
+    return null;
   }
   
 }

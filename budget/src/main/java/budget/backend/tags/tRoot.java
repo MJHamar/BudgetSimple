@@ -13,7 +13,7 @@ import budget.backend.interfaces.iTag;
  */
 public class tRoot implements iTag {
   
-  public static final int id = 00000;
+  public static final String id = "00000";
   public LinkedList<Tag> descendants;
 
   /**
@@ -47,7 +47,7 @@ public class tRoot implements iTag {
   }
 
   @Override
-  public int getId() {
+  public String getId() {
     return tRoot.id;
   }
 

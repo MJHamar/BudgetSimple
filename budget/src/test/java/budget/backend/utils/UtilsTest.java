@@ -75,7 +75,7 @@ public class UtilsTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void dataCheckerTagFalse(){
-      Tag t = new Tag(null, new LinkedList<Tag>(), 12345, "name");
+      Tag t = new Tag(null, new LinkedList<Tag>(), "12345", "name");
       dataChecker.verifyTag(t);
     }
 
@@ -83,7 +83,7 @@ public class UtilsTest {
     public void dataCheckerTagRight(){
       iTag root = new tRoot();
       Tag t = new Tag(root);
-      dataChecker.verifyTag(new Tag(t, new LinkedList<Tag>(), 12345, "name"));
+      dataChecker.verifyTag(new Tag(t, new LinkedList<Tag>(), "12345", "name"));
     }
 
     @Test

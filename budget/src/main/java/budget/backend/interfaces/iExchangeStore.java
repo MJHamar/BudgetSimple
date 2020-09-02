@@ -1,11 +1,14 @@
 package budget.backend.interfaces;
 
 import java.io.BufferedReader;
+import java.io.FileWriter;
+
+import budget.backend.money.Exchange;
 
 /**
  * This interface is responsible for the abstraction of the stores subpackage. It defines the most important methods that all stores need to have.
  */
-public interface iStore {
+public interface iExchangeStore {
   
   /**
    * Given a BufferedReader, read a textfile and create the objects that are saved within
@@ -19,7 +22,7 @@ public interface iStore {
    * @param out
    * @return false if the file was unwritable or there was an incostistency in the structure. True otherwise
    */
-  public boolean writeFile(BufferedReader out);
+  public boolean writeFile(FileWriter out);
 
   /**
    * Add a new object to the structure given a composedString that is unique for all stored objects. and contain all necessary information about it
@@ -33,15 +36,19 @@ public interface iStore {
    * @param id
    * @return false if the deletion failed
    */
-  public boolean delete(String id);
+  public Exchange delete(String id);
 
   /**
    * Find an object in the structure with the given id. 
    * @param id
    * @return false if the id was not found
    */
-  public boolean find(String id);
+  public Exchange find(String id);
 
+  /**
+   * Output all the stored data in a way, that the structure can easily be rebuilt from it
+   * @return a String containing all necessary information in the structure
+   */
   public String toString();
 
 }
