@@ -9,6 +9,7 @@
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/tags/tRoot.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/utils/DataChecker.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iExchangeStore.java
+/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/structures/LimitedStack.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/interfaces/iUser.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/groups/Group.java
 /Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/src/main/java/budget/backend/money/Currency.java

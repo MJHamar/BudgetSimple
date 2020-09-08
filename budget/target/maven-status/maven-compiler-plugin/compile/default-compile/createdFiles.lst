@@ -1,3 +1,4 @@
+budget/backend/structures/LimitedStack.class
 budget/backend/structures/BinaryTree.class
 budget/backend/structures/Tuple.class
 budget/backend/utils/Exceptions/CurrencyException.class

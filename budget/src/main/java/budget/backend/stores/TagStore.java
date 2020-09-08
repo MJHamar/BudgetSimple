@@ -144,7 +144,6 @@ public class TagStore implements iTagStore {
     //run through linearly on the dataset and sort all matching patterns
     //first find those that start with this letter
     Pattern p = Pattern.compile("^"+pattern, Pattern.CASE_INSENSITIVE);
-    LinkedList<Tag> 
 
     //cache the result for easier search on the next pattern
     //if zero matches occurred, or the input string is less than the previus, delete cache and search the whole array again
