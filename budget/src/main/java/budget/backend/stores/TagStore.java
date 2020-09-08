@@ -9,9 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Stack;
 
 import budget.backend.interfaces.iTagStore;
 import budget.backend.interfaces.iTag;
+
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * This iStore object is responsible for managing the user-defied tags, allow
@@ -26,12 +30,16 @@ public class TagStore implements iTagStore {
    */
   private HashMap<String, iTag> map;
   private DataChecker dataChecker;
-  public final iTag root = new tRoot();
+  private iTag root = new tRoot();
+
+  private Stack<LinkedList<Tag>> searchCache;
 
   public TagStore() {
     this.map = new HashMap<>();
     this.map.put(root.getId(), root);
     this.dataChecker = new DataChecker();
+    this.searchCache = new Stack<>();
+
   }
 
   @Override
@@ -42,6 +50,31 @@ public class TagStore implements iTagStore {
     boolean success = true;
     //TODO: decrypt data
 
+    try {
+      String line = in.readLine();
+      if ((line == null) || (line.compareTo("tRoot") != 0)) 
+        throw new IOException("Non-readable file");
+      else line = in.readLine();
+      //each line is a composed string of a Tag instance
+      while (line != null){
+        //split the line into components
+        String[] parts = line.split(" ");
+        //find parent, check for null
+        if (parts.length == 3){
+          iTag parent = map.get(parts[2]);
+          if (parent == null) success = false;
+          //create new Tag instance
+          Tag t = new Tag(parent, new LinkedList<Tag>(), parts[0], parts[1]);
+          //add t as a descendant of the parent
+          parent.addDescendant(t);
+        }
+        line = in.readLine();
+      }
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      System.out.println(e.getMessage());
+      success = false;
+    }
     return success;
   }
 
@@ -103,6 +136,19 @@ public class TagStore implements iTagStore {
   @Override
   public iTag find(String id) {
     return map.get(id);
+  }
+
+  public LinkedList<Tag> findSimilar(String pattern)
+  {
+    //TODO
+    //run through linearly on the dataset and sort all matching patterns
+    //first find those that start with this letter
+    Pattern p = Pattern.compile("^"+pattern, Pattern.CASE_INSENSITIVE);
+    LinkedList<Tag> 
+
+    //cache the result for easier search on the next pattern
+    //if zero matches occurred, or the input string is less than the previus, delete cache and search the whole array again
+    return null;
   }
 
   /**

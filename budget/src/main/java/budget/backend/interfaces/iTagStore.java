@@ -12,8 +12,9 @@ public interface iTagStore {
    * Given a BufferedReader, read a textfile and create the objects that are saved within
    * @param in
    * @return false if the file was unreadable or had the wrong format. True otherwise
+ * @throws Exception
    */
-  public boolean readFile(BufferedReader in);
+  public boolean readFile(BufferedReader in) throws RuntimeException;
 
   /**
    * Given a BufferedReader, write the information stored in the structure to a textfile.
