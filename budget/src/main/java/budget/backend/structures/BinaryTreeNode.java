@@ -20,7 +20,7 @@ public class BinaryTreeNode<K,V>{
 
 	//Key-only constructors
 
-	public BinaryTreeNode(){
+	public BinaryTreeNode() throws NullPointerException{
 		this.left = null;
 		this.right = null;
 		this.parent = null;
@@ -34,26 +34,32 @@ public class BinaryTreeNode<K,V>{
 	 * This constructor is to be used for Key-only trees
 	 * @param key
 	 */
-  public BinaryTreeNode(K root){
-	  this.key = root;
-	  this.parent = null;
-	  this.left = null;
-	  this.right = null;
-	  this.value = null;
+  public BinaryTreeNode(K root) throws NullPointerException{
+		if (root == null) 
+			throw new NullPointerException("Null is not allowed as key!");
+		else{
+			this.key = root;
+			this.parent = null;
+			this.left = null;
+			this.right = null;
+			this.value = null;
+		}
   }
 
 	/**
 	 * When inserting to a specific position of the tree, the parent is known.
 	 * This method is to be used for Key-only trees
+	 * 
+	 * does not throw null pointer exception, because it is used to insert to a specific position. Based on the implementation, this null-key has to be avoided.
 	 * @param parent a {@link BinaryTreeNode}
 	 * @param key
 	 */
-  public BinaryTreeNode(BinaryTreeNode<K,V> parent, K key){
-	  this.key = key;
-	  this.parent = parent;
-	  this.left = null;
-	  this.right = null;
-	  this.value = null;
+  public BinaryTreeNode(BinaryTreeNode<K,V> parent, K key) {
+		this.key = key;
+		this.parent = parent;
+		this.left = null;
+		this.right = null;
+		this.value = null;
   }
 
 	//Key-Value constructors
@@ -65,27 +71,33 @@ public class BinaryTreeNode<K,V>{
 	 * @param rootK the key of this object
 	 * @param rootV the value of this object
 	 */
-  public BinaryTreeNode(K rootK, V rootV){
-	  this.key = rootK;
-	  this.parent = null;
-	  this.left = null;
-	  this.right = null;
-  	this.value = rootV;
+  public BinaryTreeNode(K rootK, V rootV) throws NullPointerException{
+		if (rootK == null) 
+			throw new NullPointerException("Null is not allowed as key!");
+		else{
+			this.key = rootK;
+			this.parent = null;
+			this.left = null;
+			this.right = null;
+			this.value = rootV;
+		}
   }
 
 	/**
 	 * When inserting to a specific position of the tree, the parent is known.
 	 * This method is to be used for Key-Value trees
+	 * 
+	 * does not throw null pointer exception, because it is used to insert to a specific position. Based on the implementation, this null-key has to be avoided.
 	 * @param parent a {@link BinaryTreeNode}
 	 * @param key
 	 * @param value
 	 */
   public BinaryTreeNode(BinaryTreeNode<K,V> parent, K key, V value){
-	  this.key = key;
-	  this.parent = parent;
-	  this.left = null;
-	  this.right = null;
-	  this.value = value;
+		this.key = key;
+		this.parent = parent;
+		this.left = null;
+		this.right = null;
+		this.value = value;		
   }
 
 	//Additional methods

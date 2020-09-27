@@ -28,40 +28,50 @@ public class BinaryTreeHeap<K extends Comparable<K>,V> extends BinaryTree<K,V>{
 	}
 
 	/** Definition of the abstract method in the superclass. Only to be used by insert */
-	protected void add(K key){
-		//the the tree is empty, initialise a new tree
-		if (isEmpty()){
-			root = new BinaryTreeNode<K,V>(key);
-			//reset the root of the superclass
-			super.root = root;
-			last = root;
+	protected void add(K key) throws NullPointerException{
+		try{
+			//the the tree is empty, initialise a new tree			
+			if (isEmpty()){
+				root = new BinaryTreeNode<K,V>(key);
+				//reset the root of the superclass
+				super.root = root;
+				last = root;
+			}
+			//add new node to the last element, find new last and sort the tree again
+			else{
+				findNext();				
+				last.setKey(key);			
+				upHeap(last);		
+			}
+			size++;
+		} catch(NullPointerException e){
+			throw e;
 		}
-		//add new node to the last element, find new last and sort the tree again
-		else{
-			findNext();
-			last.setKey(key);
-			upHeap(last);
-		}
-		size++;
+			
 	}
 
 	/** Definition of the abstract method in the superclass. Only to be used by insert */
-	protected void add(K key, V value){
-		//the the tree is empty, initialise a new tree
-		if (isEmpty()){
-			root = new BinaryTreeNode<K,V>(key,value);
-			//reset the root of the superclass
-			super.root = root;
-			last = root;
+	protected void add(K key, V value) throws NullPointerException{
+		try {
+			// the the tree is empty, initialise a new tree
+			if (isEmpty()) {
+				root = new BinaryTreeNode<K, V>(key, value);
+				// reset the root of the superclass
+				super.root = root;
+				last = root;
+			}
+			// add new node to the last element, find new last and sort the tree again
+			else {
+				findNext();
+				last.setKey(key);
+				last.setValue(value);
+				upHeap(last);
+			}
+			size++;	
+		} 
+		catch (NullPointerException e) {
+			throw e;
 		}
-		//add new node to the last element, find new last and sort the tree again
-		else{
-			findNext();
-			last.setKey(key);
-			last.setValue(value);
-			upHeap(last);
-		}
-		size++;
 	}
 
 	/**
@@ -111,9 +121,12 @@ public class BinaryTreeHeap<K extends Comparable<K>,V> extends BinaryTree<K,V>{
 	 * @return null is the tree is empty
 	 */
 	public K removeMinK(){
-		K ret = root.getKey();
-		remove(root);
-		return ret;
+		if (!isEmpty()){
+			K ret = root.getKey();
+			remove(root);
+			return ret;
+		}
+		return null;
 	}
 
 	/**
@@ -123,29 +136,32 @@ public class BinaryTreeHeap<K extends Comparable<K>,V> extends BinaryTree<K,V>{
 	 * @return null is the tree is empty
 	 */
 	public V removeMinV(){
-		V ret = root.getValue();
-		remove(root);
-		return ret;
+		if (!isEmpty()) {
+			V ret = root.getValue();
+			remove(root);
+			return ret;
+		}
+		return null;
 	}
 
 	protected boolean remove(BinaryTreeNode<K,V> node){
 		if (!(isEmpty())){
-			if ((node.equals(last))){
+			if (size == 1){
 				node = null;
 			}
 			else {
-			//Let the key of the root the most recently inserted item
-			sw(node,last);
+				//Let the key of the root the most recently inserted item
+				sw(node,last);
 
-			//remove the last element from the tree, by setting the pointer from its parent to null
-			BinaryTreeNode<K,V> parent = last.getParent();
-			if (last.equals((parent.getRight())))
-					parent.setRight(null);
-			else parent.setLeft(null);
+				//remove the last element from the tree, by setting the pointer from its parent to null
+				BinaryTreeNode<K,V> parent = last.getParent();
+				if (last.equals((parent.getRight())))
+						parent.setRight(null);
+				else parent.setLeft(null);
 
-			//restore the Heap, such that it remains ordered.
-			downHeap(root);
-			findPrev();
+				//restore the Heap, such that it remains ordered.
+				downHeap(root);
+				findPrev();
 			}
 			size--;
 			return true;
@@ -193,7 +209,7 @@ public class BinaryTreeHeap<K extends Comparable<K>,V> extends BinaryTree<K,V>{
 	 * @return whether there are any keys defined in the tree.
 	 */
 	public boolean isEmpty(){
-		return super.isEmpty();
+		return size == 0;
 	}
 
 	/**

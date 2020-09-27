@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 import budget.backend.interfaces.iTagStore;
+import budget.backend.structures.BinaryTreeHeap;
+import budget.backend.structures.LimitedStack;
 import budget.backend.interfaces.iTag;
 
 import java.util.regex.Pattern;
@@ -32,14 +34,16 @@ public class TagStore implements iTagStore {
   private DataChecker dataChecker;
   private iTag root = new tRoot();
 
-  private Stack<LinkedList<Tag>> searchCache;
+  /** serachCache and searchHistory together represent the previous patterns and results, speeding up searching */
+  private LimitedStack<LinkedList<Tag>> searchCache;
+  private LimitedStack<String> searchHistory;
 
   public TagStore() {
     this.map = new HashMap<>();
     this.map.put(root.getId(), root);
     this.dataChecker = new DataChecker();
-    this.searchCache = new Stack<>();
-
+    this.searchCache = new LimitedStack<>(10);
+    this.searchHistory = new LimitedStack<>(10);
   }
 
   @Override
@@ -144,7 +148,25 @@ public class TagStore implements iTagStore {
     //run through linearly on the dataset and sort all matching patterns
     //first find those that start with this letter
     Pattern p = Pattern.compile("^"+pattern, Pattern.CASE_INSENSITIVE);
-
+    Matcher m;
+    String historyHelper;
+    LinkedList<Tag> cacheHelper;
+    //pop all elements from the stack that does not match the current pattern
+    do{
+      historyHelper = searchHistory.pop();
+      cacheHelper = searchCache.pop();
+      m = p.matcher(historyHelper);
+    } while (!m.find());
+    //found a matching String in the history, continue with the found LinkedList. There is no need to find all non-matching Strings again
+    if (m.find())
+    {
+      searchCache.push(cacheHelper);
+      searchHistory.push(historyHelper);
+      for (Tag t : cacheHelper){
+        m = p.matcher(t.getName());
+      }
+    }
+    
     //cache the result for easier search on the next pattern
     //if zero matches occurred, or the input string is less than the previus, delete cache and search the whole array again
     return null;
@@ -171,6 +193,32 @@ public class TagStore implements iTagStore {
     for (Tag tt : t.getDescendants())
       ret += toStringFrom(tt);
 
+    return ret;
+  }
+
+  @SuppressWarnings("unchecked")
+  private LinkedList<Tag> bestMatch(LinkedList<Tag> list, String pattern)
+  {
+    //selection sort the list, removing any elements that do not fit the pattern
+    Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+    Pattern p1 = Pattern.compile("^" + pattern, Pattern.CASE_INSENSITIVE);
+    //heap-sort the elements, full match on p gets nr 0, match on p1 gets nr 1, match on p gets nr 2
+    BinaryTreeHeap<Integer, Tag> tree = new BinaryTreeHeap<>();
+
+    for (Tag t : list){
+      Matcher m = p.matcher(t.getName());
+      Matcher m1 = p1.matcher(t.getName());
+      if (m.find())
+        tree.insert(0,t);
+      else if (m1.matches())
+        tree.insert(1, t);
+      else if (m.matches())
+        tree.insert(2, t);
+    }
+    //export the sorted list from the tree
+    LinkedList<Tag> ret = new LinkedList<>();
+    for (int i = 0; i < tree.getSize(); i++)
+      ret.add(tree.removeMinV());
     return ret;
   }
   
