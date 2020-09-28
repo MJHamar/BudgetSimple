@@ -119,8 +119,66 @@ public class TagStore implements iTagStore {
       return success;
   }
 
+  /**
+   * Add a predefined Tag to the structure. Parent has to be a known tag to the structure, or a default tag.
+   * 
+   * If the parent is not found, but the id is verified, add this to one of the default tags.
+   * @param t
+   * @return true if the tag was added to the structure
+   */
+  public boolean add(Tag t) throws Exception
+  {
+    try {
+      dataChecker.verifyTag(t);
+      iTag parent = this.find(t.getParent().getId());
+      if (parent == null){
+        String newParentID = t.getId().substring(0, 1);
+        newParentID += "0000"; //recreate the id of a default tag
+        parent = this.find(newParentID);
+        t.setParent((Tag)parent);
+      }
+      //add to parent as descendant
+      parent.getDescendants().add(t);
+
+      map.put(t.getId(), t);
+      
+    } catch (Exception e) {
+      throw e;
+    }
+    return true;
+  }
+
+  public void define(iTag parent, String name) throws IllegalArgumentException
+  {
+    try{
+      //find parent
+      if (map.containsKey(parent.getId())){
+        // create new ID
+        String newId = parent.getId();
+        int firstZero = newId.indexOf("0");
+        if (firstZero > 0){
+          newId = newId.substring(0, firstZero);
+          newId += String.valueOf(parent.getDescendants().size());
+          while (newId.length() < 10) newId += "0";
+          //TODO: rebuild TagID to length 10
+        } else {
+          newId = String.valueOf(Integer.valueOf(newId)+1);
+        }
+        
+        // add new tag to the structure
+      }
+      //parent was not found
+      else 
+        throw new IllegalArgumentException("structure does not contain the given parent object!");
+    }
+    catch(Exception e){
+      throw e;
+    }
+  }
+
   @Override
-  public iTag delete(String id) {
+  public iTag delete(String id) 
+  {
     Tag t = null;
     try {
       dataChecker.verifyTagId(id);
@@ -138,13 +196,16 @@ public class TagStore implements iTagStore {
   }
 
   @Override
-  public iTag find(String id) {
+  public iTag find(String id) 
+  {
     return map.get(id);
   }
 
   public LinkedList<Tag> findSimilar(String pattern)
   {
-    //TODO
+    //TODO: figure out best choice, and finish this function
+
+
     //run through linearly on the dataset and sort all matching patterns
     //first find those that start with this letter
     Pattern p = Pattern.compile("^"+pattern, Pattern.CASE_INSENSITIVE);
@@ -197,8 +258,10 @@ public class TagStore implements iTagStore {
   }
 
   @SuppressWarnings("unchecked")
-  private LinkedList<Tag> bestMatch(LinkedList<Tag> list, String pattern)
+  protected LinkedList<Tag> bestMatch(LinkedList<Tag> list, String pattern)
   {
+    //TODO: make private
+
     //selection sort the list, removing any elements that do not fit the pattern
     Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
     Pattern p1 = Pattern.compile("^" + pattern, Pattern.CASE_INSENSITIVE);
