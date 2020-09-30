@@ -50,9 +50,9 @@ public class Currency implements Comparable<Currency> {
     this.dataChecker = new DataChecker();
     try{
       dataChecker.verifyCurrency(composedString);
-      String help = composedString.substring(1, composedString.indexOf(" "));
+      String help = composedString.substring(1, composedString.indexOf(";"));
       this.amount = Integer.valueOf(help);
-      help = composedString.substring(composedString.indexOf(" ")+1, composedString.length()-2);
+      help = composedString.substring(composedString.indexOf(";")+1, composedString.length()-2);
     } catch (Exception e){
       System.out.println(e.getMessage());
       throw e;
@@ -124,7 +124,7 @@ public class Currency implements Comparable<Currency> {
   public String toString() {
     String ret = "";
 
-    ret += "[" + amount + " " + currency + "]";
+    ret += "[" + amount + ";" + currency + "]";
 
     return ret;
   }

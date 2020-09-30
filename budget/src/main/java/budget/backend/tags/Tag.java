@@ -14,7 +14,7 @@ public class Tag implements iTag {
   
   private iTag parent;
   private LinkedList<Tag> descendants;
-  private String id; /** a 5-digit number */
+  private String id; /** a 9-digit number */
   private String name;
   private DataChecker dataChecker;
 
@@ -22,7 +22,7 @@ public class Tag implements iTag {
     this.dataChecker = new DataChecker();
     this.parent = null;
     this.descendants = new LinkedList<>();
-    this.id = "10000";
+    this.id = "100000000";
     this.name = "Misc";
     System.out.println("Please set parent with an existing tRoot instance to have a full tree");
   }
@@ -32,14 +32,18 @@ public class Tag implements iTag {
     dataChecker.verifyTRoot((tRoot)root);
     this.parent = root;
     this.descendants = new LinkedList<>();
-    this.id = "10000";
+    this.id = "100000000";
     this.name = "Misc";
   }
 
+  /**
+   * Construct a Tag object using the given composedString. This method cannot determine neither the parent object, nor the descendants. 
+   * @param composedString
+   * @throws IllegalArgumentException
+   */
   public Tag(String composedString) throws IllegalArgumentException{
     this.dataChecker = new DataChecker();
-    String[] help = composedString.split(" ");
-    System.out.println(help[0] + "\n" + help[1] + "\n" + help[2]);
+    String[] help = composedString.split(";");
     try {
       this.id = help[0];
       this.descendants = new LinkedList<>();
@@ -50,15 +54,13 @@ public class Tag implements iTag {
     } catch (Exception e) {
       System.out.println(e.getMessage());
       throw e;
-    } finally {
-      System.out.println("Not sufficient information, please set descendants and parent.");
     }
   }
 
   public Tag(iTag parent, LinkedList<Tag> descendants, String id, String name) throws IllegalArgumentException{
     this.dataChecker = new DataChecker();
     try {
-      if (parent instanceof tRoot)dataChecker.verifyTRoot((tRoot)parent);
+      if (parent instanceof tRoot) dataChecker.verifyTRoot((tRoot)parent);
       else dataChecker.verifyTag((Tag)parent);
       this.parent = parent;
       dataChecker.verifyTagId(id);
@@ -121,8 +123,8 @@ public class Tag implements iTag {
   public String toString(){
     String ret = "";
 
-    ret += id + " ";
-    ret += name + " ";
+    ret += id + ";";
+    ret += name + ";";
     if (this.parent != null) ret += parent.getId();
 
     return ret;

@@ -125,7 +125,7 @@ public abstract class Exchange implements iExchange {
   public String toString(){
     String ret = "";
 
-    ret += id + " " + currency.toString() + " " + date.toString() + " " + labels.toString() + " " + this.groupID;
+    ret += id + ";" + currency.toString() + ";" + date.toString() + ";" + labels.toString() + ";" + this.groupID;
 
     return ret;
   }

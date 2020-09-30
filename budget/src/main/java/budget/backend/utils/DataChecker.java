@@ -70,13 +70,13 @@ public class DataChecker {
 
   public void verifyTRoot(tRoot t) throws IllegalArgumentException
   {
-    if (t.getDescendants() == null || t.getName() != "root" || t.getId() != "00000")
+    if (t.getDescendants() == null || t.getName() != "root" || t.getId() != "000000000")
       throw new IllegalArgumentException("Badly set tRoot");
   }
 
   public void verifyTagId(String id) throws IllegalArgumentException
   {
-    if (id == "00000") throw new IllegalArgumentException("do not use the id reserved for tRoot");
-    if (Integer.valueOf(id) < 10000 || Integer.valueOf(id) > 99999) throw new IllegalArgumentException("erroneous Tag id");
+    if (id == "000000000") throw new IllegalArgumentException("do not use the id reserved for tRoot");
+    if (Integer.valueOf(id) < 100000000 || Integer.valueOf(id) > 999999999) throw new IllegalArgumentException("erroneous Tag id");
   }
 }

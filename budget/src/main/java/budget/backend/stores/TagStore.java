@@ -58,11 +58,14 @@ public class TagStore implements iTagStore {
       String line = in.readLine();
       if ((line == null) || (line.compareTo("tRoot") != 0)) 
         throw new IOException("Non-readable file");
-      else line = in.readLine();
+      else {
+        line = in.readLine();
+      }
       //each line is a composed string of a Tag instance
       while (line != null){
         //split the line into components
-        String[] parts = line.split(" ");
+        String[] parts = line.split(";");
+        for (String s : parts)
         //find parent, check for null
         if (parts.length == 3){
           iTag parent = map.get(parts[2]);
@@ -71,11 +74,11 @@ public class TagStore implements iTagStore {
           Tag t = new Tag(parent, new LinkedList<Tag>(), parts[0], parts[1]);
           //add t as a descendant of the parent
           parent.addDescendant(t);
+          map.put(t.getId(), t);
         }
         line = in.readLine();
       }
     } catch (Exception e) {
-      // TODO Auto-generated catch block
       System.out.println(e.getMessage());
       success = false;
     }
@@ -102,7 +105,7 @@ public class TagStore implements iTagStore {
     boolean success = true;
     Tag n = null;
     try {
-      String[] help = composedString.split(" ");
+      String[] help = composedString.split(";");
       if (help.length != 3) success = false;
       else{
         iTag parent = find(help[2]);
@@ -148,7 +151,8 @@ public class TagStore implements iTagStore {
     return true;
   }
 
-  public void define(iTag parent, String name) throws IllegalArgumentException
+  @Override
+  public Tag define(iTag parent, String name) throws IllegalArgumentException
   {
     try{
       //find parent
@@ -158,14 +162,20 @@ public class TagStore implements iTagStore {
         int firstZero = newId.indexOf("0");
         if (firstZero > 0){
           newId = newId.substring(0, firstZero);
-          newId += String.valueOf(parent.getDescendants().size());
-          while (newId.length() < 10) newId += "0";
-          //TODO: rebuild TagID to length 10
+          if (parent.getDescendants().size() == 9) 
+            throw new IllegalArgumentException("Parent descendants out of bound");
+          else
+            newId += String.valueOf(parent.getDescendants().size()+1);
+          while (newId.length() < 9) newId += "0";
         } else {
-          newId = String.valueOf(Integer.valueOf(newId)+1);
+          throw new IllegalArgumentException("Tree structure is at maximum height!");
         }
-        
+        iTag t = new Tag(parent, new LinkedList<Tag>(),newId, name);
+        dataChecker.verifyTag((Tag) t);
         // add new tag to the structure
+        parent.addDescendant((Tag) t);
+        map.put(newId, t);
+        return (Tag) t;
       }
       //parent was not found
       else 

@@ -22,23 +22,22 @@ public class TagTest {
 	@Test 
 	public void tNull(){
 		Tag nullTest = new Tag();
-		boolean t = nullTest.getDescendants().size() == 0 && nullTest.getId() == "10000" && nullTest.getParent() == null && nullTest.getName() == "Misc";
+		boolean t = nullTest.getDescendants().size() == 0 && nullTest.getId() == "100000000" && nullTest.getParent() == null && nullTest.getName() == "Misc";
 		assertTrue(t);
 	}
 
 	@Test	
 	public void defTest(){
 		Tag oneTest = new Tag(root);
-		boolean t = oneTest.getDescendants().size() == 0 && oneTest.getId() == "10000" && oneTest.getParent() == root && oneTest.getName() == "Misc";
+		boolean t = oneTest.getDescendants().size() == 0 && oneTest.getId() == "100000000" && oneTest.getParent() == root && oneTest.getName() == "Misc";
 		assertTrue(t);
 	}
 
 	@Test
 	public void constructorTest(){
-		System.out.println("constructor Test");
-		Tag twoTest = new Tag("12345 abc 00000");
+		Tag twoTest = new Tag("123456789;abc;000000000");
 		boolean t = 
-			twoTest.getId().compareTo("12345") == 0 &&
+			twoTest.getId().compareTo("123456789") == 0 &&
 			twoTest.getParent() == null &&
 			twoTest.getName().compareTo("abc") == 0 &&
 			twoTest.getDescendants().size() == 0;

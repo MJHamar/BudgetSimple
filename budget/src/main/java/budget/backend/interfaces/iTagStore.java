@@ -3,6 +3,8 @@ package budget.backend.interfaces;
 import java.io.BufferedReader;
 import java.io.FileWriter;
 
+import budget.backend.tags.Tag;
+
 /**
  * This interface is responsible for the abstraction of the stores subpackage. It defines the most important methods that all stores need to have.
  */
@@ -29,6 +31,16 @@ public interface iTagStore {
    * @return false if the format of the composedString was not right
    */
   public boolean add(String composedString);
+
+  /**
+   * define a new user-defined Tag object. This method generates a new ID for the tree structure with the given conventions
+   * 
+   *    The id of the Tag is a 9-digit number, that represents the trip from the root of the tree to the Tag, by stating which descendant of the parent the tag is. There are 9 descendants possible with an index from 1-9. A Tag with 0 index is not allowed.
+   * @param root
+   * @param name
+   * @throws IllegalArgumentException
+   */
+  public Tag define(iTag root, String name) throws IllegalArgumentException;
 
   /**
    * Given an id, delete the object from the structure

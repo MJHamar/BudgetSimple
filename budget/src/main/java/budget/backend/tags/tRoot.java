@@ -13,7 +13,7 @@ import budget.backend.interfaces.iTag;
  */
 public class tRoot implements iTag {
   
-  public static final String id = "00000";
+  public static final String id = "000000000";
   public LinkedList<Tag> descendants;
 
   /**
