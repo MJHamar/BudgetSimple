@@ -106,11 +106,7 @@ public class TagStoreTest {
       store.define(store.find("400000000"), "Fruit");
       store.define(store.find("410000000"), "Apples");
 
-      File file2 = new File("/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/tagsNew.txt");
-      file2.createNewFile();
-
-      FileWriter w = new FileWriter(file2, false);
-      store.writeFile(w);
+      System.out.println("toString:\n" + store.toString());
 
     } catch (Exception e) {
       throw e;
