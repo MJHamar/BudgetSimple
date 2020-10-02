@@ -121,5 +121,9 @@ public class LimitedStack<E>
     return this.limit;
   }
 
+  public boolean isEmpty(){
+    return stack.isEmpty();
+  }
+
   
 }

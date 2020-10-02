@@ -135,6 +135,25 @@ public class Tag implements iTag {
     return this.name;
   }
 
+  @Override
+  public Tag removeDescendant(String id) {
+    for (Tag t : descendants){
+      if (t.getId().compareTo(id) == 0){
+        descendants.remove(t);
+        return t;
+      }
+    }
+    return null;
+  }
+
+  @Override 
+  public Tag removeDescendant(Tag t){ 
+    if (descendants.remove(t))
+      return t;
+    else 
+      return null;
+  }
+
 
 
 }

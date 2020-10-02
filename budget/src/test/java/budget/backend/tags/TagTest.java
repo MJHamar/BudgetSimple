@@ -44,6 +44,20 @@ public class TagTest {
 		assertTrue(t);
 	}
 
+	@Test
+	public void removeDescendantTest(){
+		Tag t = new Tag("10000000;asd;000000000");
+		Tag tt1 = new Tag("110000000;def;100000000");
+		Tag tt2 = new Tag("120000000;ghi;100000000");
+		t.addDescendant(tt1);
+		t.addDescendant(tt2);
+		assertTrue(t.getDescendants().size() == 2);
+		t.removeDescendant(tt2);
+		assertTrue(t.getDescendants().size() == 1);
+		t.removeDescendant("110000000");
+		assertTrue(t.getDescendants().size() == 0);
+	}
+
 	/* assertion errors to be resolved later
 	@Test(expected = IllegalArgumentException.class)
 	public void tFail(){

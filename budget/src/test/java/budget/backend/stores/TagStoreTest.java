@@ -28,32 +28,6 @@ public class TagStoreTest {
     
   }
 
-  //@Test
-  public void bestMatchTest(){
-    iTag root = new tRoot();
-    LinkedList<Tag> list = new LinkedList<>();
-    Tag t1 = new Tag(root);//misc 100000
-    Tag t2 = new Tag(root, new LinkedList<Tag>(), "110000000", "memory");
-    Tag t3 = new Tag(root, new LinkedList<Tag>(), "120000000", "mem");
-    Tag t4 = new Tag(root, new LinkedList<Tag>(), "130000000", "Memoy");
-    Tag t5 = new Tag(root, new LinkedList<Tag>(), "140000000", "orymem");
-    list.add(t1);
-    list.add(t2);
-    list.add(t3);
-    list.add(t4);
-    list.add(t5);
-    
-    LinkedList<Tag> m1 = store.bestMatch(list, "m");
-    LinkedList<Tag> e1 = new LinkedList<>();
-    e1.add(t3);
-    e1.add(t2);
-    e1.add(t4);
-    e1.add(t5);
-    e1.add(t1);
-    assertEquals(e1, m1);
-    
-  }
-
   @Test
   public void addTest(){
     store.add("800000000;regular expense;000000000");
@@ -95,7 +69,9 @@ public class TagStoreTest {
   }
  
   @Test
-  public void writeTest() throws Exception{
+  //Working is verified, but don't want to constantly create the same files
+  public void writeTest() throws Exception
+  {
     try {
       File file = new File("/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/tags.txt");
       BufferedReader r = new BufferedReader(new FileReader(file));
@@ -106,11 +82,90 @@ public class TagStoreTest {
       store.define(store.find("400000000"), "Fruit");
       store.define(store.find("410000000"), "Apples");
 
-      System.out.println("toString:\n" + store.toString());
+      File file2 = new File("/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/tagsNew.txt");
+      file2.createNewFile();
+
+      FileWriter w = new FileWriter(file2, false);
+      store.writeFile(w);
+      w.close();
 
     } catch (Exception e) {
       throw e;
     }
   }
+
+  @Test
+  public void bestMatchTest() {
+    iTag root = new tRoot();
+    LinkedList<iTag> list = new LinkedList<>();
+    Tag t1 = new Tag(root);// misc 100000
+    Tag t2 = new Tag(root, new LinkedList<Tag>(), "110000000", "memory");
+    Tag t3 = new Tag(root, new LinkedList<Tag>(), "120000000", "mem");
+    Tag t4 = new Tag(root, new LinkedList<Tag>(), "130000000", "Memoy");
+    Tag t5 = new Tag(root, new LinkedList<Tag>(), "140000000", "orymem");
+    list.add(t1);
+    list.add(t2);
+    list.add(t3);
+    list.add(t4);
+    list.add(t5);
+
+    LinkedList<iTag> m1 = store.bestMatch(list, "m");
+    LinkedList<iTag> e1 = new LinkedList<>();
+    e1.add(t3);
+    e1.add(t2);
+    e1.add(t4);
+    e1.add(t1);
+    e1.add(t5);
+    assertEquals(e1, m1);
+
+    m1= store.bestMatch(list, "mem");
+    e1.clear();
+    e1.add(t3);
+    e1.add(t2);
+    e1.add(t4);
+    e1.add(t5);
+    assertEquals(e1, m1);
+
+  }
+
+  @Test 
+  public void findSimilarTest(){
+    File file = new File("/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/tags.txt");
+    BufferedReader r;
+    try {
+      r = new BufferedReader(new FileReader(file));
+      store.readFile(r);
+
+      LinkedList<iTag> list = store.findSimilar("r");
+      String m1 = "";
+      for (iTag t : list)
+        m1 += t.getName() + ";";
+      assertEquals("regular expense;groceries;party;travel;", m1);
+      
+      list = store.findSimilar("ar");
+      m1 = "";
+      for (iTag t : list)
+        m1 += t.getName() + ";";
+      assertEquals("party;regular expense;", m1);
+
+      list = store.findSimilar("re");
+      m1 = "";
+      for (iTag t : list)
+        m1 += t.getName() + ";";
+      assertEquals("regular expense;", m1);
+
+      list = store.findSimilar("g");
+      m1 = "";
+      for (iTag t : list)
+        m1 += t.getName() + ";";
+      assertEquals("groceries;regular expense;shopping;", m1);
+
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
 
 }

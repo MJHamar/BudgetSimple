@@ -14,6 +14,7 @@ import java.util.Stack;
 import budget.backend.interfaces.iTagStore;
 import budget.backend.structures.BinaryTreeHeap;
 import budget.backend.structures.LimitedStack;
+import budget.backend.structures.Tuple;
 import budget.backend.interfaces.iTag;
 
 import java.util.regex.Pattern;
@@ -35,9 +36,12 @@ public class TagStore implements iTagStore {
   private iTag root = new tRoot();
 
   /** serachCache and searchHistory together represent the previous patterns and results, speeding up searching */
-  private LimitedStack<LinkedList<Tag>> searchCache;
+  private LimitedStack<LinkedList<iTag>> searchCache;
   private LimitedStack<String> searchHistory;
 
+  /**
+   * Construct a new TagStore object.
+   */
   public TagStore() {
     this.map = new HashMap<>();
     this.map.put(root.getId(), root);
@@ -46,8 +50,11 @@ public class TagStore implements iTagStore {
     this.searchHistory = new LimitedStack<>(10);
   }
 
+  /**
+   * Read data from a file, that is encrypted with the user's private key.
+   */
   @Override
-  public boolean readFile(BufferedReader in) {
+  public boolean readFile(BufferedReader in) throws RuntimeException {
 
     // going from top to bottom, for all Tags, create them using their parents
     // (which always comes before the descendant and add them to the structure)
@@ -65,7 +72,6 @@ public class TagStore implements iTagStore {
       while (line != null){
         //split the line into components
         String[] parts = line.split(";");
-        for (String s : parts)
         //find parent, check for null
         if (parts.length == 3){
           iTag parent = map.get(parts[2]);
@@ -86,7 +92,8 @@ public class TagStore implements iTagStore {
   }
 
   /**
-   * Write the information stored in the structure to a given file
+   * Write the information stored in the structure to a given file, and encrypt it with the user's public key. 
+   * @param out
    */
   @Override
   public boolean writeFile(FileWriter out) {
@@ -100,6 +107,10 @@ public class TagStore implements iTagStore {
     return true;
   }
 
+  /**
+   * Add a new object to the structure, given the composedString format. 
+   * @param composedString (<id>;<name>;<parentID>)
+   */
   @Override
   public boolean add(String composedString) {
     boolean success = true;
@@ -151,6 +162,12 @@ public class TagStore implements iTagStore {
     return true;
   }
 
+  /**
+   * Define a new tag. Generate new ID given the parent Tag, and put the new object in the structure
+   * @parent
+   * @name
+   * @throws IllegalArgumentException
+   */
   @Override
   public Tag define(iTag parent, String name) throws IllegalArgumentException
   {
@@ -186,6 +203,10 @@ public class TagStore implements iTagStore {
     }
   }
 
+  /**
+   * Delete a Tag from the structure, if it exsists. 
+   * @param id
+   */
   @Override
   public iTag delete(String id) 
   {
@@ -195,6 +216,7 @@ public class TagStore implements iTagStore {
       t = (Tag)map.remove(id);
       if (t != null){
         t.getParent().addDescendants(t.getDescendants());
+        t.getParent().removeDescendant(t);
       }
 
     } catch (Exception e) {
@@ -211,36 +233,41 @@ public class TagStore implements iTagStore {
     return map.get(id);
   }
 
-  public LinkedList<Tag> findSimilar(String pattern)
+  public LinkedList<iTag> findSimilar(String pattern)
   {
     //TODO: figure out best choice, and finish this function
 
 
     //run through linearly on the dataset and sort all matching patterns
     //first find those that start with this letter
-    Pattern p = Pattern.compile("^"+pattern, Pattern.CASE_INSENSITIVE);
-    Matcher m;
-    String historyHelper;
-    LinkedList<Tag> cacheHelper;
-    //pop all elements from the stack that does not match the current pattern
-    do{
-      historyHelper = searchHistory.pop();
+    Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
+    Matcher m = null;
+    String historyHelper = null;
+    LinkedList<iTag> cacheHelper = null;
+    //pop all elements from the stack that do not match the current pattern
+    while (!searchCache.isEmpty() || (m != null && m.find())){
       cacheHelper = searchCache.pop();
+      historyHelper = searchHistory.pop();
       m = p.matcher(historyHelper);
-    } while (!m.find());
-    //found a matching String in the history, continue with the found LinkedList. There is no need to find all non-matching Strings again
-    if (m.find())
-    {
+    }
+    if (searchCache.isEmpty()){
+      // if zero matches occurred, 
+      // delete cache and search the whole array again
+      LinkedList<iTag> l = new LinkedList<>();
+      for (String s : map.keySet())
+        if (s != "000000000") l.add(map.get(s));
+      cacheHelper = bestMatch(l, pattern);
+    } else if (historyHelper != null && cacheHelper != null){
+      //m cannot be null at this point
       searchCache.push(cacheHelper);
       searchHistory.push(historyHelper);
-      for (Tag t : cacheHelper){
-        m = p.matcher(t.getName());
-      }
+      cacheHelper = bestMatch(cacheHelper, pattern);
     }
+    // cache the result for easier search on the next pattern
+    searchCache.push(cacheHelper);
+    searchHistory.push(pattern);
+    return cacheHelper;
     
-    //cache the result for easier search on the next pattern
-    //if zero matches occurred, or the input string is less than the previus, delete cache and search the whole array again
-    return null;
   }
 
   /**
@@ -268,7 +295,7 @@ public class TagStore implements iTagStore {
   }
 
   @SuppressWarnings("unchecked")
-  protected LinkedList<Tag> bestMatch(LinkedList<Tag> list, String pattern)
+  protected LinkedList<iTag> bestMatch(LinkedList<iTag> list, String pattern)
   {
     //TODO: make private
 
@@ -276,22 +303,33 @@ public class TagStore implements iTagStore {
     Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
     Pattern p1 = Pattern.compile("^" + pattern, Pattern.CASE_INSENSITIVE);
     //heap-sort the elements, full match on p gets nr 0, match on p1 gets nr 1, match on p gets nr 2
-    BinaryTreeHeap<Integer, Tag> tree = new BinaryTreeHeap<>();
+    BinaryTreeHeap<Tuple<Integer,String>, iTag> tree = new BinaryTreeHeap<>();
 
-    for (Tag t : list){
+    for (iTag t : list){
       Matcher m = p.matcher(t.getName());
       Matcher m1 = p1.matcher(t.getName());
-      if (m.find())
-        tree.insert(0,t);
-      else if (m1.matches())
-        tree.insert(1, t);
+      if (m1.matches())
+      {
+        tree.insert(new Tuple<Integer, String>(0,t.getName().toUpperCase()),t); 
+      }
       else if (m.matches())
-        tree.insert(2, t);
+      {
+        tree.insert(new Tuple<Integer, String>(1, t.getName().toUpperCase()), t);
+      }
+      else if (m1.find())
+      {
+        tree.insert(new Tuple<Integer, String>(2, t.getName().toUpperCase()), t);
+      }
+      else if (m.find())
+      {
+        tree.insert(new Tuple<Integer, String>(3, t.getName().toUpperCase()), t);
+      }
     }
     //export the sorted list from the tree
-    LinkedList<Tag> ret = new LinkedList<>();
-    for (int i = 0; i < tree.getSize(); i++)
+    LinkedList<iTag> ret = new LinkedList<>();
+    while (!tree.isEmpty()){
       ret.add(tree.removeMinV());
+    }
     return ret;
   }
   

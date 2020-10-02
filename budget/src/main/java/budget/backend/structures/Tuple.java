@@ -69,6 +69,11 @@ public class Tuple<E extends Comparable<E>,F extends Comparable<F>> implements C
     }
   }
 
+  @Override
+  public String toString(){
+    return "<" + this.first + ";" + this.second + ">";
+  }
+
 
   
 }
