@@ -4,6 +4,7 @@ import budget.backend.interfaces.iTag;
 import budget.backend.tags.Tag;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -161,10 +162,29 @@ public class TagStoreTest {
       assertEquals("groceries;regular expense;shopping;", m1);
 
     } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
+  }
+
+  @Test
+  public void findDescendantsTest(){
+    File file = new File("/Users/hamarmiklos/OneDrive - University of Warwick/projects/BudgetSimple/budget/tagsNew.txt");
+    BufferedReader r;
+    try {
+      r = new BufferedReader(new FileReader(file));
+      store.readFile(r);
+
+      iTag t = store.find("400000000");
+      LinkedList<iTag> list = store.getAllDescendants(t);
+      String s = "";
+      for (iTag tt : list){
+        assertTrue(tt.getId().charAt(0) == '4');
+      }
+
+    } catch (Exception e){
+      e.printStackTrace();
+    }
   }
 
 

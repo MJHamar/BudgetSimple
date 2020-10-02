@@ -235,9 +235,6 @@ public class TagStore implements iTagStore {
 
   public LinkedList<iTag> findSimilar(String pattern)
   {
-    //TODO: figure out best choice, and finish this function
-
-
     //run through linearly on the dataset and sort all matching patterns
     //first find those that start with this letter
     Pattern p = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
@@ -280,6 +277,16 @@ public class TagStore implements iTagStore {
     return toStringFrom(root);
   }
 
+  public LinkedList<iTag> getAllDescendants(iTag t){
+    LinkedList<iTag> list = new LinkedList<>();
+
+    list.add(t);
+    for (iTag tt : t.getDescendants())
+      list.addAll(getAllDescendants(tt));
+
+    return list;
+  }
+    
   /**
    * Recursively call all descendants of the given tag. This method ensures that all elements of the sub-tree are parsed in a linear runtime
    * @param t
