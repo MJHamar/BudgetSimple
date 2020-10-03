@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
 import budget.backend.interfaces.iTagStore;
 import budget.backend.structures.BinaryTreeHeap;
@@ -29,7 +28,7 @@ public class TagStore implements iTagStore {
   /**
    * Tags themselves refer to each-other in a tre--like way, therefore it is not
    * necessary to store them in an actual data structure. For easyer insertion and
-   * serach, a hashmap is used.
+   * search, a hashmap is used.
    */
   private HashMap<String, iTag> map;
   private DataChecker dataChecker;
@@ -78,6 +77,7 @@ public class TagStore implements iTagStore {
           if (parent == null) success = false;
           //create new Tag instance
           Tag t = new Tag(parent, new LinkedList<Tag>(), parts[0], parts[1]);
+          dataChecker.verifyTag(t);
           //add t as a descendant of the parent
           parent.addDescendant(t);
           map.put(t.getId(), t);

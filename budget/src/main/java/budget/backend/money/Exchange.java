@@ -10,23 +10,30 @@ import budget.backend.utils.DataChecker;
 
 public abstract class Exchange implements iExchange {
 
-  protected int id; // 9-digit number
+  /**
+   * String of length 10. The first character defines tha type of the Exchange
+   * object {@see budget.backend.interface.iExchange}
+   * 
+   * The next 9 characters are a hash generated from the userID the date and a random 5 digit salt. 
+   */
+  protected String id;
   protected Currency currency;
   protected Date date;
   protected LinkedList<Tag> labels; // miscellaneous is the default tag
   protected DataChecker dataChecker;
-  protected String groupID; // user id in case of a simple income/expense
+  protected String groupID; // "0" if not defined
 
   /**
    * Constructor to initialise a default Exchange class, where all values are set to default
    */
   public Exchange(){
-    this.id = 000000000;
+    this.id = "000000000";
     this.currency = new Currency();
     this.date = new Date();
     this.labels = new LinkedList<>();
     this.labels.add(new Tag());
     this.dataChecker = new DataChecker();
+    this.groupID = "0";
   }
   
   /**
@@ -46,6 +53,7 @@ public abstract class Exchange implements iExchange {
       this.date = date;
       this.labels = new LinkedList<>();
       this.labels.add(label);
+      this.groupID = "0";
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -58,8 +66,8 @@ public abstract class Exchange implements iExchange {
   @Override
   public int compareTo(iExchange o){
 
-    Tuple<Currency, Tuple<Date, Integer>> key1 = new Tuple<>(this.currency, new Tuple<>(this.date, this.id));
-    Tuple<Currency, Tuple<Date, Integer>> key2 = new Tuple<>(o.getCurrency(), new Tuple<>(o.getDate(), o.getId()));
+    Tuple<Currency, Tuple<Date, String>> key1 = new Tuple<>(this.currency, new Tuple<>(this.date, this.id));
+    Tuple<Currency, Tuple<Date, String>> key2 = new Tuple<>(o.getCurrency(), new Tuple<>(o.getDate(), o.getId()));
 
     
     return key1.compareTo(key2);
@@ -69,7 +77,7 @@ public abstract class Exchange implements iExchange {
    * @return the id of this object
    */
   @Override
-  public int getId(){
+  public String getId(){
     return this.id;
   }
 
@@ -125,7 +133,11 @@ public abstract class Exchange implements iExchange {
   public String toString(){
     String ret = "";
 
-    ret += id + ";" + currency.toString() + ";" + date.toString() + ";" + labels.toString() + ";" + this.groupID;
+    ret += id + ";" + 
+           currency.toString() + ";" + 
+           date.toString() + ";" + 
+           labels.toString() + ";" + 
+           this.groupID;
 
     return ret;
   }

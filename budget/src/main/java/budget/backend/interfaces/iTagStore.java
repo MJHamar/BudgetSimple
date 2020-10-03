@@ -9,7 +9,7 @@ import budget.backend.tags.Tag;
  * This interface is responsible for the abstraction of the stores subpackage. It defines the most important methods that all stores need to have.
  */
 public interface iTagStore {
-  
+   
   /**
    * Given a BufferedReader, read a textfile and create the objects that are saved within
    * @param in

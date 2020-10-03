@@ -3,6 +3,7 @@ package budget.backend.utils;
 import java.lang.IllegalArgumentException;
 import java.util.Date;
 
+import budget.backend.interfaces.iExchange;
 import budget.backend.interfaces.iTag;
 import budget.backend.money.Currency;
 import budget.backend.tags.tRoot;
@@ -37,11 +38,13 @@ public class DataChecker {
 
   }
 
-  public void verifyId(int id) throws IllegalArgumentException
+  public void verifyId(String id) throws IllegalArgumentException
   {
-    if (id < 100000000 || id > 999999999)
-      throw new IllegalArgumentException("Wrong length of ID");
-    //TODO: verify that id is unique
+    char type = id.charAt(0);
+    if (type != iExchange._DEBT && type != iExchange._EXPENSE && type != iExchange._INCOME)
+      throw new IllegalArgumentException("Unable to define type of exchange");
+    if (id.length() != 10)
+      throw new IllegalArgumentException("Wrong length of ExchangeID");
   }
 
   public void verifyDate(Date date) throws IllegalArgumentException

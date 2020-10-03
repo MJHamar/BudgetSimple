@@ -11,23 +11,15 @@ public class Debt extends Exchange {
   private User debtor; /** the user that owes the money */
   private User creditor; /** the user that is owed */
 
-  public Debt(Currency currency, Date date, Tag label, User debtor, User creditor){
+  public Debt(String id, Currency currency, Date date, Tag label, User debtor, User creditor){
     super(currency, date, label);
+    dataChecker.verifyId(id);
     setId(id);
     //TODO: verify users
     this.debtor = debtor;
     this.creditor = creditor;
   }
 
-  @Override
-  public void setId(int id) {
-    try {
-      super.dataChecker.verifyId(id);
-      super.id = id;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-  }
 
   @Override
   public void setDate(Date date) {

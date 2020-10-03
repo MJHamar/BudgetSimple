@@ -8,11 +8,13 @@ import budget.backend.tags.*;
 
 public interface iExchange extends Comparable<iExchange>{
 
+  public static final char _EXPENSE = 'e';
+  public static final char _INCOME = 'i';
+  public static final char _DEBT = 'd';
+
   public String toString();
 
-  public int getId();
-  public void setId(int id);
-
+  public String getId();
   /**
    * @return return a Date object representing the date of creation
    */

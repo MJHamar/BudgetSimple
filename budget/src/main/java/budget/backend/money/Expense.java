@@ -7,13 +7,13 @@ import budget.backend.utils.Exceptions.CurrencyException;
 
 public class Expense extends Exchange {
 
-  public Expense(int id, Currency currency, Date date, Tag label) {
+  public Expense(String id, Currency currency, Date date, Tag label) {
     super(currency, date, label);
     setId(id);
   }
 
   @Override
-  public void setId(int id) {
+  public void setId(String id) {
     try {
       super.dataChecker.verifyId(id);
       super.id = id;
