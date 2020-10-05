@@ -1,26 +1,15 @@
 package budget.backend.money;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 import budget.backend.tags.Tag;
 import budget.backend.utils.Exceptions.CurrencyException;
 
 public class Income extends Exchange {
 
-  public Income(String id, Currency currency, Date date, Tag label){
-    super(currency, date, label);
-    setId(id);
-  }
-
-  @Override
-  public void setId(String id) {
-    try {
-      super.dataChecker.verifyId(id);
-      super.id = id;
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-    
+  public Income(String id, Currency currency, Date date, LinkedList<Tag> labels){
+    super(id ,currency, date, labels);
   }
 
   @Override

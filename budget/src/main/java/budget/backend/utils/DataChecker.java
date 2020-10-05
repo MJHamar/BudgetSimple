@@ -4,9 +4,11 @@ import java.lang.IllegalArgumentException;
 import java.util.Date;
 
 import budget.backend.interfaces.iExchange;
+import budget.backend.interfaces.iExchangeStore;
 import budget.backend.interfaces.iTag;
 import budget.backend.money.Currency;
 import budget.backend.tags.tRoot;
+import budget.backend.users.User;
 import budget.backend.tags.Tag;
 import budget.backend.utils.CurrencyExchanger;
 
@@ -81,5 +83,14 @@ public class DataChecker {
   {
     if (id == "000000000") throw new IllegalArgumentException("do not use the id reserved for tRoot");
     if (Integer.valueOf(id) < 100000000 || Integer.valueOf(id) > 999999999) throw new IllegalArgumentException("erroneous Tag id");
+  }
+
+  public void verifyUser(User user) throws IllegalArgumentException{
+    //TODO
+  }
+
+  public void verifyType(char type) throws IllegalArgumentException{
+    if (type != iExchangeStore._DEBT && type != iExchangeStore._INCOME && type != iExchangeStore._EXPENSE && type != iExchangeStore._UNDEFINED)
+      throw new IllegalArgumentException("badly set Exchange type!");
   }
 }

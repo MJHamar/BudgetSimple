@@ -5,11 +5,15 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
+import java.security.MessageDigest;
+import java.text.MessageFormat;
 
 import budget.backend.interfaces.iExchangeStore;
 import budget.backend.money.Currency;
 import budget.backend.money.Debt;
 import budget.backend.money.Exchange;
+import budget.backend.money.Income;
 import budget.backend.structures.AVLSearchTree;
 import budget.backend.structures.LimitedStack;
 import budget.backend.tags.Tag;
@@ -81,14 +85,29 @@ public class ExchangeStore implements iExchangeStore {
   }
 
   @Override
-  public Exchange define(User user, byte type, Currency currency, String title, LinkedList<Tag> labels)
+  public Exchange define(User user, char type, Currency currency, String title, LinkedList<Tag> labels)
       throws AmbiguousDebtorException {
-    // TODO Auto-generated method stub
+    try {
+      dataChecker.verifyUser(user);
+      dataChecker.verifyType(type);
+      if (type == iExchangeStore._UNDEFINED)
+        throw new IllegalArgumentException("undefined Exchange type");
+      else {
+        String newID = this.generateId(user.getId(), new Date(), type);
+        switch (type){
+          case iExchangeStore._INCOME:
+            Exchange ret = new Income(newID, currency, new Date(), labels);
+        }
+      }
+      
+    } catch (Exception e) {
+      throw e;
+    }
     return null;
   }
 
   @Override
-  public Exchange define(User user, byte type, Currency currency, String title, LinkedList<Tag> labels, Date date)
+  public Exchange define(User user, char type, Currency currency, String title, LinkedList<Tag> labels, Date date)
       throws AmbiguousDebtorException {
     // TODO Auto-generated method stub
     return null;
@@ -107,39 +126,68 @@ public class ExchangeStore implements iExchangeStore {
   }
 
   @Override
-  public LinkedList<Exchange> getAllByDate(byte type) {
+  public LinkedList<Exchange> getAllByDate(char type) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LinkedList<Exchange> getAllByName(byte type) {
+  public LinkedList<Exchange> getAllByName(char type) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LinkedList<Exchange> getTagByDate(Tag t, byte type) {
+  public LinkedList<Exchange> getTagByDate(Tag t, char type) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LinkedList<Exchange> getTagByName(Tag t, byte type) {
+  public LinkedList<Exchange> getTagByName(Tag t, char type) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LinkedList<Exchange> getTagsByDate(LinkedList<Tag> ts, byte type) {
+  public LinkedList<Exchange> getTagsByDate(LinkedList<Tag> ts, char type) {
     // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, byte type) {
+  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, char type) {
     // TODO Auto-generated method stub
     return null;
+  }
+
+  private final String generateId(String userID, Date date, char type) throws IllegalArgumentException{
+    String ret = "";
+    if (type == 'u') throw new IllegalArgumentException("Undefined type of Exchange object");
+    else {
+      try {
+        ret += type;
+        int salt = (int) Math.random() * 10000;
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        // Add password bytes to digest
+        String concat = userID+date+salt;
+        md.update(concat.getBytes());
+        // Get the hash's bytes
+        byte[] bytes = md.digest();
+        // This bytes[] has bytes in decimal format;
+        // Convert it to hexadecimal format
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+          sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        // Get complete hashed password in hex format
+        ret += "_" + sb.toString();
+      } catch (Exception e) {
+        throw new IllegalArgumentException("unable to generate ID");
+      }
+      
+    }
+    return ret;
   }
   
 }

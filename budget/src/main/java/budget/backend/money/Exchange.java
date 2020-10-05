@@ -43,17 +43,41 @@ public abstract class Exchange implements iExchange {
    * @param date
    * @param label
    */
-  public Exchange(Currency currency, Date date, Tag label){
+  public Exchange(String id, Currency currency, Date date, LinkedList<Tag> labels){
     this.dataChecker = new DataChecker();
 
     try {
+      dataChecker.verifyId(id);
+      this.id = id;
       dataChecker.verifyCurrency(currency);
       this.currency = currency;
       dataChecker.verifyDate(date);
       this.date = date;
-      this.labels = new LinkedList<>();
-      this.labels.add(label);
+      for (Tag t : labels)
+        dataChecker.verifyTag(t);
+      this.labels = labels;
       this.groupID = "0";
+
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  public Exchange(String id, Currency currency, Date date, LinkedList<Tag> labels, String groupID) {
+    this.dataChecker = new DataChecker();
+
+    try {
+      dataChecker.verifyId(id);
+      this.id = id;
+      dataChecker.verifyCurrency(currency);
+      this.currency = currency;
+      dataChecker.verifyDate(date);
+      this.date = date;
+      for (Tag t : labels)
+        dataChecker.verifyTag(t);
+      this.labels = labels;
+      dataChecker.verifyGroupID(groupID);
+      this.groupID = groupID;
 
     } catch (Exception e) {
       System.out.println(e.getMessage());

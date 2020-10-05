@@ -17,10 +17,10 @@ import budget.backend.utils.Exceptions.AmbiguousDebtorException;
  */
 public interface iExchangeStore {
 
-  public static final byte _UNDEFINED = 0;
-  public static final byte _INCOME = 1;
-  public static final byte _EXPENSE = 2;
-  public static final byte _DEBT = 3;
+  public static final char _UNDEFINED = 'u';
+  public static final char _INCOME = 'i';
+  public static final char _EXPENSE = 'e';
+  public static final char _DEBT = 'd';
   
   /**
    * Given a BufferedReader, read a textfile and create the objects that are saved within
@@ -75,7 +75,7 @@ public interface iExchangeStore {
    *         dataChecker. 
    * @throws budget.backend.utils.Exceptions.AmbiguousDebtorException
    */
-  public Exchange define(User user, byte type, Currency currency, String title, LinkedList<Tag> labels) throws AmbiguousDebtorException;
+  public Exchange define(User user, char type, Currency currency, String title, LinkedList<Tag> labels) throws AmbiguousDebtorException;
 
   /**
    * Define a new Exchange object specifying the date it was created. Not
@@ -93,7 +93,7 @@ public interface iExchangeStore {
    * @param date
    * @return the defined Exchange object or null, if an exception occurred. Normally, the defined Exchange object could not be verified by the dataChecker. 
    */
-  public Exchange define(User user, byte type, Currency currency, String title, LinkedList<Tag> labels, Date date) throws AmbiguousDebtorException;
+  public Exchange define(User user, char type, Currency currency, String title, LinkedList<Tag> labels, Date date) throws AmbiguousDebtorException;
 
   /**
    * Define a Debt object stating the creditor and the debtor. 
@@ -127,7 +127,7 @@ public interface iExchangeStore {
    * @param type one of the final fields of the iExchangeStore interface
    * @return
    */
-  public LinkedList<Exchange> getAllByDate(byte type);
+  public LinkedList<Exchange> getAllByDate(char type);
   
   /**
    * 
@@ -135,7 +135,7 @@ public interface iExchangeStore {
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getAllByName(byte type);
+  public LinkedList<Exchange> getAllByName(char type);
 
   /**
    * 
@@ -143,7 +143,7 @@ public interface iExchangeStore {
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagByDate(Tag t, byte type);
+  public LinkedList<Exchange> getTagByDate(Tag t, char type);
 
   /**
    * 
@@ -151,7 +151,7 @@ public interface iExchangeStore {
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagByName(Tag t, byte type);
+  public LinkedList<Exchange> getTagByName(Tag t, char type);
 
   /**
    * 
@@ -159,7 +159,7 @@ public interface iExchangeStore {
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagsByDate(LinkedList<Tag> ts, byte type);
+  public LinkedList<Exchange> getTagsByDate(LinkedList<Tag> ts, char type);
 
   /**
    * 
@@ -167,7 +167,7 @@ public interface iExchangeStore {
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, byte type); 
+  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, char type); 
 
 
 }

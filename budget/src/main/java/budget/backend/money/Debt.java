@@ -1,6 +1,7 @@
 package budget.backend.money;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 import budget.backend.tags.Tag;
 import budget.backend.users.User;
@@ -11,15 +12,13 @@ public class Debt extends Exchange {
   private User debtor; /** the user that owes the money */
   private User creditor; /** the user that is owed */
 
-  public Debt(String id, Currency currency, Date date, Tag label, User debtor, User creditor){
-    super(currency, date, label);
-    dataChecker.verifyId(id);
-    setId(id);
-    //TODO: verify users
+  public Debt(String id, Currency currency, Date date, LinkedList<Tag> labels, User debtor, User creditor){
+    super(id, currency, date, labels);
+    dataChecker.verifyUser(debtor);
+    dataChecker.verifyUser(creditor);
     this.debtor = debtor;
     this.creditor = creditor;
   }
-
 
   @Override
   public void setDate(Date date) {
