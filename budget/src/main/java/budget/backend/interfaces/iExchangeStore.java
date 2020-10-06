@@ -105,7 +105,21 @@ public interface iExchangeStore {
    * @param debtor the debtor
    * @return the defined Debt object or null, if the object was not created. Normally because it could not be verified by the DataChecker.
    */
-  public Debt defineDebt(User creditor, Currency currency, String title, LinkedList<Tag> labels, User debtor);
+  public Exchange defineDebt(User creditor, Currency currency, String title, LinkedList<Tag> labels, User debtor);
+
+  /**
+   * Define a Debt object stating the creditor and the debtor.
+   * 
+   * @param user     the creditor
+   * @param currency a Currency object
+   * @param title    user-defined title
+   * @param labels
+   * @param date
+   * @param debtor   the debtor
+   * @return the defined Debt object or null, if the object was not created.
+   *         Normally because it could not be verified by the DataChecker.
+   */
+  public Exchange defineDebt(User creditor, Currency currency, String title, LinkedList<Tag> labels, Date date, User debtor);
 
   /**
    * Find all elements of the structure that has the same pattern in their title
@@ -131,11 +145,11 @@ public interface iExchangeStore {
   
   /**
    * 
-   * get all instances in the structure ordered by name
+   * get all instances in the structure ordered by amount in HUF
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getAllByName(char type);
+  public LinkedList<Exchange> getAllByAmount(char type);
 
   /**
    * 
@@ -147,11 +161,12 @@ public interface iExchangeStore {
 
   /**
    * 
-   * get all instances in the structure with the given Tag ordered by name
+   * get all instances in the structure with the given Tag ordered by amount in
+   * HUF
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagByName(Tag t, char type);
+  public LinkedList<Exchange> getTagByAmount(Tag t, char type);
 
   /**
    * 
@@ -163,11 +178,12 @@ public interface iExchangeStore {
 
   /**
    * 
-   * get all instances in the structure with the given list of tags ordered by name
+   * get all instances in the structure with the given list of tags ordered by
+   * amount in HUF
    * 
    * @param type one of the final fields of the iExchangeStore interface* @return
    */
-  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, char type); 
+  public LinkedList<Exchange> getTagsByAmount(LinkedList<Tag> ts, char type); 
 
 
 }

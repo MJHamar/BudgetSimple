@@ -13,11 +13,14 @@ import budget.backend.interfaces.iExchangeStore;
 import budget.backend.money.Currency;
 import budget.backend.money.Debt;
 import budget.backend.money.Exchange;
+import budget.backend.money.Expense;
 import budget.backend.money.Income;
 import budget.backend.structures.AVLSearchTree;
 import budget.backend.structures.LimitedStack;
+import budget.backend.structures.Tuple;
 import budget.backend.tags.Tag;
 import budget.backend.users.User;
+import budget.backend.utils.CurrencyExchanger;
 import budget.backend.utils.DataChecker;
 import budget.backend.utils.Exceptions.AmbiguousDebtorException;
 
@@ -28,12 +31,12 @@ public class ExchangeStore implements iExchangeStore {
   /**
    * dateTree orders elements by date, if two have the same date then by title, if both title and name are the same, it orders by ID hence creating total order
   */
-  private AVLSearchTree<Date,Exchange> dateTree;
+  private AVLSearchTree<Tuple<Date,Tuple<String,String>>,Exchange> dateTree;
   /**
-   * nameTree orders elements by title, if two have the same title then by date, if
-   * both title and name are the same, it orders by ID hence creating total order
+   * amountTree orders elements by amount, if two have the same title then by date, if
+   * both amount and date are the same, it orders by ID hence creating total order
    */
-  private AVLSearchTree<Date,Exchange> nameTree;
+  private AVLSearchTree<Tuple<Currency,Tuple<Date,String>>,Exchange> amountTree;
 
   private DataChecker dataChecker;
 
@@ -47,7 +50,7 @@ public class ExchangeStore implements iExchangeStore {
   public ExchangeStore(){
     this.tagMap = new HashMap<>();
     this.dateTree = new AVLSearchTree<>();
-    this.nameTree = new AVLSearchTree<>();
+    this.amountTree = new AVLSearchTree<>();
     this.dataChecker = new DataChecker();
     this.searchCache = new LimitedStack<>();
     this.searchHistory = new LimitedStack<>();
@@ -89,34 +92,119 @@ public class ExchangeStore implements iExchangeStore {
       throws AmbiguousDebtorException {
     try {
       dataChecker.verifyUser(user);
-      dataChecker.verifyType(type);
-      if (type == iExchangeStore._UNDEFINED)
-        throw new IllegalArgumentException("undefined Exchange type");
-      else {
-        String newID = this.generateId(user.getId(), new Date(), type);
-        switch (type){
-          case iExchangeStore._INCOME:
-            Exchange ret = new Income(newID, currency, new Date(), labels);
-        }
-      }
-      
+      dataChecker.verifyType(type); 
+      Exchange ret = null;
+      String newID = this.generateId(user.getId(), new Date(), type);
+      switch (type){
+        case iExchangeStore._INCOME:
+          ret = new Income(newID, currency, new Date(), labels);
+          break;
+        case iExchangeStore._EXPENSE:
+          ret = new Expense(newID, currency, new Date(), labels);
+          break;
+        case iExchangeStore._DEBT:
+          ret = new Debt(newID, currency, new Date(), labels, new User(), user);
+          throw new AmbiguousDebtorException((Debt)ret);
+
+        default: //undefined 
+          throw new IllegalArgumentException("undefined Exchange type");
+      }  
+      //put into structures 
+      for (Tag t : labels)
+        tagMap.put(t, ret);
+      Tuple<String, String> dateInner = new Tuple<String,String>(title, newID);
+      Tuple<Date,Tuple<String,String>> dateOuter = new Tuple<>(ret.getDate(),dateInner);
+      dateTree.insert(dateOuter, ret);
+      Tuple<Date, String> amountInner = new Tuple<Date, String>(ret.getDate(), newID);
+      Tuple<Currency, Tuple<Date, String>> amountOuter = 
+                    new Tuple<>(ret.getCurrency(), amountInner);
+      amountTree.insert(amountOuter, ret);
+      return ret;
     } catch (Exception e) {
       throw e;
     }
-    return null;
   }
 
   @Override
   public Exchange define(User user, char type, Currency currency, String title, LinkedList<Tag> labels, Date date)
       throws AmbiguousDebtorException {
-    // TODO Auto-generated method stub
-    return null;
+    try {
+      dataChecker.verifyUser(user);
+      dataChecker.verifyType(type);
+      Exchange ret = null;
+      String newID = this.generateId(user.getId(), date, type);
+      switch (type) {
+        case iExchangeStore._INCOME:
+          ret = new Income(newID, currency, date, labels);
+          break;
+        case iExchangeStore._EXPENSE:
+          ret = new Expense(newID, currency, date, labels);
+          break;
+        case iExchangeStore._DEBT:
+          ret = new Debt(newID, currency, date, labels, new User(), user);
+          throw new AmbiguousDebtorException((Debt) ret);
+
+        default: // undefined
+          throw new IllegalArgumentException("undefined Exchange type");
+      }
+      // put into structures
+      for (Tag t : labels)
+        tagMap.put(t, ret);
+      Tuple<String, String> dateInner = new Tuple<String, String>(title, newID);
+      Tuple<Date, Tuple<String, String>> dateOuter = new Tuple<>(ret.getDate(), dateInner);
+      dateTree.insert(dateOuter, ret);
+      Tuple<Date, String> amountInner = new Tuple<Date, String>(ret.getDate(), newID);
+      Tuple<Currency, Tuple<Date, String>> amountOuter = new Tuple<>(ret.getCurrency(), amountInner);
+      amountTree.insert(amountOuter, ret);
+      return ret;
+    } catch (Exception e) {
+      throw e;
+    }
   }
 
   @Override
-  public Debt defineDebt(User user, Currency currency, String title, LinkedList<Tag> labels, User debtor) {
-    // TODO Auto-generated method stub
-    return null;
+  public Exchange defineDebt(User creditor, Currency currency, String title, LinkedList<Tag> labels, User debtor) {
+    try {
+      dataChecker.verifyUser(creditor);
+      dataChecker.verifyUser(debtor);
+      String newID = this.generateId(creditor.getId(), new Date(), iExchangeStore._DEBT);
+      Exchange ret = new Debt(newID, currency, new Date(), labels, debtor, creditor);
+      // put into structures
+      for (Tag t : labels)
+        tagMap.put(t, ret);
+      Tuple<String, String> dateInner = new Tuple<String, String>(title, newID);
+      Tuple<Date, Tuple<String, String>> dateOuter = new Tuple<>(ret.getDate(), dateInner);
+      dateTree.insert(dateOuter, ret);
+      Tuple<Date, String> amountInner = new Tuple<Date, String>(ret.getDate(), newID);
+      Tuple<Currency, Tuple<Date, String>> amountOuter = new Tuple<>(ret.getCurrency(), amountInner);
+      amountTree.insert(amountOuter, ret);
+      return ret;
+    } catch (Exception e) {
+      throw e;
+    }
+  }
+
+  @Override
+  public Exchange defineDebt(User creditor, Currency currency, String title, LinkedList<Tag> labels, Date date,
+      User debtor) {
+    try {
+      dataChecker.verifyUser(creditor);
+      dataChecker.verifyUser(debtor);
+      String newID = this.generateId(creditor.getId(), new Date(), iExchangeStore._DEBT);
+      Exchange ret = new Debt(newID, currency, new Date(), labels, debtor, creditor);
+      // put into structures
+      for (Tag t : labels)
+        tagMap.put(t, ret);
+      Tuple<String, String> dateInner = new Tuple<String, String>(title, newID);
+      Tuple<Date, Tuple<String, String>> dateOuter = new Tuple<>(ret.getDate(), dateInner);
+      dateTree.insert(dateOuter, ret);
+      Tuple<Date, String> amountInner = new Tuple<Date, String>(ret.getDate(), newID);
+      Tuple<Currency, Tuple<Date, String>> amountOuter = new Tuple<>(ret.getCurrency(), amountInner);
+      amountTree.insert(amountOuter, ret);
+      return ret;
+    } catch (Exception e) {
+      throw e;
+    }
   }
 
   @Override
@@ -132,7 +220,7 @@ public class ExchangeStore implements iExchangeStore {
   }
 
   @Override
-  public LinkedList<Exchange> getAllByName(char type) {
+  public LinkedList<Exchange> getAllByAmount(char type) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -144,7 +232,7 @@ public class ExchangeStore implements iExchangeStore {
   }
 
   @Override
-  public LinkedList<Exchange> getTagByName(Tag t, char type) {
+  public LinkedList<Exchange> getTagByAmount(Tag t, char type) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -156,7 +244,7 @@ public class ExchangeStore implements iExchangeStore {
   }
 
   @Override
-  public LinkedList<Exchange> getTagsByName(LinkedList<Tag> ts, char type) {
+  public LinkedList<Exchange> getTagsByAmount(LinkedList<Tag> ts, char type) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -189,5 +277,7 @@ public class ExchangeStore implements iExchangeStore {
     }
     return ret;
   }
+
+  
   
 }

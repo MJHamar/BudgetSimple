@@ -1,5 +1,7 @@
 package budget.backend.utils;
 
+import budget.backend.money.Currency;
+
 public class CurrencyExchanger {
   
   //TODO: should be a hashmap
@@ -30,5 +32,6 @@ public class CurrencyExchanger {
     //TODO: convert by real-time data
 	  return amount;
   }
+
 
 }

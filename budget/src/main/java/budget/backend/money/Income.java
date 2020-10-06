@@ -8,7 +8,8 @@ import budget.backend.utils.Exceptions.CurrencyException;
 
 public class Income extends Exchange {
 
-  public Income(String id, Currency currency, Date date, LinkedList<Tag> labels){
+  public Income(String id, Currency currency, Date date, LinkedList<Tag> labels
+  {
     super(id ,currency, date, labels);
   }
 
