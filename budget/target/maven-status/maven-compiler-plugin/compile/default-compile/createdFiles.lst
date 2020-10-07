@@ -19,6 +19,7 @@ budget/backend/interfaces/iTag.class
 budget/backend/money/Currency.class
 budget/backend/users/User.class
 budget/backend/structures/BinaryTreeHeap.class
+budget/backend/utils/Exceptions/AmbiguousDebtorException.class
 budget/backend/interfaces/iTagStore.class
 budget/backend/interfaces/iExchangeStore.class
 budget/backend/structures/BinaryTreeNode.class

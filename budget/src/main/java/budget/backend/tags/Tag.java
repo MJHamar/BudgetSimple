@@ -122,7 +122,6 @@ public class Tag implements iTag {
   @Override
   public String toString(){
     String ret = "";
-
     ret += id + ";";
     ret += name + ";";
     if (this.parent != null) ret += parent.getId();

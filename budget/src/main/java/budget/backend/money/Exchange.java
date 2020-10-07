@@ -150,7 +150,7 @@ public abstract class Exchange implements iExchange {
   /**
    * Export the class' fields to a String
    * 
-   * Format: <id> [currency.amount currency.currency] <date> <label>
+   * Format: <id> [currency.amount currency.currency] <date> <labels>
    * @return the String in the given format
    */
   @Override

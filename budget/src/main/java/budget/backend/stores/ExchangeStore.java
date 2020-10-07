@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 import java.security.MessageDigest;
-import java.text.MessageFormat;
 
 import budget.backend.interfaces.iExchangeStore;
 import budget.backend.money.Currency;
@@ -261,12 +260,10 @@ public class ExchangeStore implements iExchangeStore {
         String concat = userID+date+salt;
         md.update(concat.getBytes());
         // Get the hash's bytes
-        byte[] bytes = md.digest();
-        // This bytes[] has bytes in decimal format;
-        // Convert it to hexadecimal format
+        byte[] bytes = md.digest();//decimal format
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < bytes.length; i++) {
-          sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+          sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));//hexadecimal
         }
         // Get complete hashed password in hex format
         ret += "_" + sb.toString();

@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import budget.backend.money.Currency;
-import budget.backend.money.Debt;
 import budget.backend.money.Exchange;
 import budget.backend.tags.Tag;
 import budget.backend.users.User;
