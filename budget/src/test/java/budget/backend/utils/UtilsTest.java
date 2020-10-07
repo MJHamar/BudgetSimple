@@ -52,14 +52,14 @@ public class UtilsTest {
     }
 
     //TODO: write test cases with hashed ID
-    //@Test(expected = IllegalArgumentException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void dataCheckerIdFalse(){
-      dataChecker.verifyId("u_12345678");
+      dataChecker.verifyId("_12345678");
     }
 
-    //@Test
+    @Test
     public void dataCheckerIdRight(){
-      dataChecker.verifyId("i_999999999");
+      dataChecker.verifyId("i_9facd5d601ef793816d0f234d067aa52");//length 34
     }
 
     @Test

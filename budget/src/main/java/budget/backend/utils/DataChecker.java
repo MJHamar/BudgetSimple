@@ -43,13 +43,13 @@ public class DataChecker {
   public void verifyId(String id) throws IllegalArgumentException
   {
     //TODO: verify the hashed ID
-    /*
+    //Hashed Id has length 34, and starts with [uied]_ 
     char type = id.charAt(0);
     if (type != iExchange._DEBT && type != iExchange._EXPENSE && type != iExchange._INCOME)
       throw new IllegalArgumentException("Unable to define type of exchange");
-    if (id.length() != 10)
+    if (id.length() != 34)
       throw new IllegalArgumentException("Wrong length of ExchangeID");
-    */
+    
   }
 
   public void verifyDate(Date date) throws IllegalArgumentException
